@@ -1,0 +1,23 @@
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5rem calc(100dvh - 5rem);
+  grid-template-areas:
+    "header"
+    "content";
+
+  height: 100dvh;
+  overflow: hidden;
+  background-color: white;
+  padding: 0 1rem;
+}
+
+.app__header {
+  grid-area: header;
+}
+
+.app__content {
+  grid-area: content;
+  overflow-y: auto;
+  min-height: 0;
+}
