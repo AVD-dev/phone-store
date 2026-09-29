@@ -1,5 +1,5 @@
 import type { GetProductsParams } from "./get-products.dto";
-import type { ProductSummaryDto } from "./product-summary.dto";
+import type { ProductDetailDto, ProductDto } from "./product-summary.dto";
 
 const PRODUCTS_URL = import.meta.env.VITE_API_URL;
 
@@ -18,7 +18,7 @@ const catalogFetch = (
 
 export async function getProducts(
   params: GetProductsParams = {},
-): Promise<ProductSummaryDto[]> {
+): Promise<ProductDto[]> {
   const url = new URL(PRODUCTS_URL);
 
   if (params.search) {
@@ -37,6 +37,17 @@ export async function getProducts(
 
   if (!response.ok) {
     throw new Error(`Failed to load products: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function getProductById(id: string): Promise<ProductDetailDto> {
+  const url = new URL(`${PRODUCTS_URL}/${id}`);
+  const response = await catalogFetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Failed to load product by ID: ${response.status}`);
   }
 
   return response.json();

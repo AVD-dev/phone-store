@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getProducts } from "./catalog-api";
+import { getProductById, getProducts } from "./catalog-api";
 
 describe("getProducts", () => {
   beforeEach(() => {
@@ -90,5 +90,48 @@ describe("getProducts", () => {
     );
 
     await expect(getProducts()).rejects.toThrow("Failed to load products: 500");
+  });
+});
+
+describe("GetProductById", () => {
+  it("should get a product by id", async () => {
+    const product = {
+      id: "123",
+      name: "Phone X",
+      basePrice: 699,
+      storageOptions: [],
+      colorOptions: [],
+    };
+
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify(product), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    );
+
+    const result = await getProductById("123");
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    const [requestUrl] = fetchMock.mock.calls[0];
+
+    expect(requestUrl.toString()).toBe(`${import.meta.env.VITE_API_URL}/123`);
+
+    expect(result).toEqual(product);
+  });
+
+  it("should throw when get product by id fails", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, {
+        status: 404,
+      }),
+    );
+
+    await expect(getProductById("123")).rejects.toThrow(
+      "Failed to load product by ID: 404",
+    );
   });
 });
