@@ -1,6 +1,33 @@
 .phone-card {
   border: thin solid;
   padding: 1rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #000;
+    transform: translateY(100%);
+    transition: transform 300ms ease;
+    z-index: -1;
+  }
+
+  &:hover::before {
+    transform: translateY(0);
+  }
+
+  &:hover &__price,
+  &:hover &__detail--medium {
+    color: white;
+  }
+
+  &:hover &__detail--small {
+    color: lightgray;
+  }
 
   &--column {
     display: flex;

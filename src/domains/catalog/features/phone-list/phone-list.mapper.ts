@@ -7,7 +7,7 @@ export function toPhoneCardViewModel(
   return {
     id: product.id,
     imageUrl: product.imageUrl,
-    brand: product.brand,
+    brand: product.brand.toUpperCase(),
     labels: [product.name],
     price: `${product.basePrice} EUR`,
     orientation: "column",

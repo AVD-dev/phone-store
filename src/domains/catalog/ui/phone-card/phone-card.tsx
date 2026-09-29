@@ -7,7 +7,7 @@ export default function PhoneCard({ phoneData }: PhoneCardProps) {
       className={
         phoneData.orientation === "column"
           ? "phone-card phone-card--column"
-          : "phone-card--row"
+          : "phone-card phone-card--row"
       }
     >
       <img className="phone-card__image" src={phoneData.imageUrl}></img>
