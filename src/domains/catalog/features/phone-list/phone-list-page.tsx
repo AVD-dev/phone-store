@@ -13,7 +13,7 @@ export default function PhoneListPage() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      getProducts({ limit: 20, search: searchValue }).then(setProducts);
+      getProducts({ limit: 20, search: searchValue.trim() }).then(setProducts);
     }, 300);
 
     return () => clearTimeout(timeoutId);
@@ -27,7 +27,7 @@ export default function PhoneListPage() {
           name="phone-searcher"
           type="text"
           value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value.trim())}
+          onChange={(event) => setSearchValue(event.target.value)}
           placeholder="Search for a smartphone..."
         />
         <span className="searcher__count">20 RESULTS</span>
