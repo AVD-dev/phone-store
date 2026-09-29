@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import PhoneDetailPage from "../domains/catalog/features/phone-detail-page/phone-detail-page";
-import PhoneListPage from "../domains/catalog/features/phone-list-page/phone-list-page";
+import PhoneDetailPage from "../domains/catalog/features/phone-detail/phone-detail-page";
+import PhoneListPage from "../domains/catalog/features/phone-list/phone-list-page";
 import CartPage from "../domains/cart/features/cart/cart-page";
 import App from "./App";
 

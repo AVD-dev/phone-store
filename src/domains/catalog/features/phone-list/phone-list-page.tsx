@@ -6,14 +6,18 @@ import type { ProductSummaryDto } from "../../data-access/product-summary.dto";
 import { toPhoneCardViewModel } from "./phone-list.mapper";
 
 export default function PhoneListPage() {
-  const [value, setValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [products, setProducts] = useState<ProductSummaryDto[]>([]);
 
   const phones = products.map(toPhoneCardViewModel);
 
   useEffect(() => {
-    getProducts({ limit: 20 }).then(setProducts);
-  }, []);
+    const timeoutId = setTimeout(() => {
+      getProducts({ limit: 20, search: searchValue }).then(setProducts);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchValue]);
 
   return (
     <div className="phone-list">
@@ -22,8 +26,8 @@ export default function PhoneListPage() {
           className="searcher__field"
           name="phone-searcher"
           type="text"
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value.trim())}
           placeholder="Search for a smartphone..."
         />
         <span className="searcher__count">20 RESULTS</span>
