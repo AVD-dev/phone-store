@@ -1,5 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getProducts } from "./catalog-api";
 
 describe("getProducts", () => {
