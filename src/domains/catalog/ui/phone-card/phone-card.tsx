@@ -1,28 +1,32 @@
 import "./phone-card.scss";
-import type { PhoneCardProps } from "./phone-card.viewmodel";
+import type { PhoneCardProps } from "./phone-card.types";
 
-export default function PhoneCard({ phoneData }: PhoneCardProps) {
+export default function PhoneCard({
+  imageUrl,
+  brand,
+  labels,
+  price,
+  orientation = "column",
+}: PhoneCardProps) {
   return (
     <div
       className={
-        phoneData.orientation === "column"
+        orientation === "column"
           ? "phone-card phone-card--column"
           : "phone-card phone-card--row"
       }
     >
-      <img className="phone-card__image" src={phoneData.imageUrl}></img>
+      <img className="phone-card__image" src={imageUrl}></img>
       <div className="phone-card__info">
         <div className="phone-card__detail">
-          {phoneData.brand && (
-            <span className="phone-card__detail--small">{phoneData.brand}</span>
-          )}
+          {brand && <span className="phone-card__detail--small">{brand}</span>}
 
-          {phoneData.labels &&
-            phoneData.labels.map((label) => (
+          {labels &&
+            labels.map((label) => (
               <span className="phone-card__detail--medium">{label}</span>
             ))}
         </div>
-        <span className="phone-card__price">{phoneData.price}</span>
+        <span className="phone-card__price">{price}</span>
       </div>
     </div>
   );

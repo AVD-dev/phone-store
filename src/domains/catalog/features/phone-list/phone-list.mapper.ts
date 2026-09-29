@@ -1,15 +1,17 @@
 import type { ProductSummaryDto } from "../../data-access/product-summary.dto";
-import type { PhoneCardViewModel } from "../../ui/phone-card/phone-card.props";
+import type { PhoneListItemViewModel } from "./phone-list.viewmodel";
 
 export function toPhoneCardViewModel(
   product: ProductSummaryDto,
-): PhoneCardViewModel {
+): PhoneListItemViewModel {
   return {
     id: product.id,
-    imageUrl: product.imageUrl,
-    brand: product.brand.toUpperCase(),
-    labels: [product.name],
-    price: `${product.basePrice} EUR`,
-    orientation: "column",
+    card: {
+      imageUrl: product.imageUrl,
+      brand: product.brand.toUpperCase(),
+      labels: [product.name],
+      price: `${product.basePrice} EUR`,
+      orientation: "column",
+    },
   };
 }
