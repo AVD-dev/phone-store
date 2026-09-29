@@ -20,6 +20,8 @@ export default function PhoneListPage() {
     return () => clearTimeout(timeoutId);
   }, [searchValue]);
 
+  const resultsCount = products.length;
+
   return (
     <div className="phone-list">
       <div className="searcher">
@@ -31,11 +33,11 @@ export default function PhoneListPage() {
           onChange={(event) => setSearchValue(event.target.value)}
           placeholder="Search for a smartphone..."
         />
-        <span className="searcher__count">20 RESULTS</span>
+        <span className="searcher__count">{resultsCount} RESULTS</span>
       </div>
       <div className="phone-list__content">
-        {products.map((phone) => (
-          <Link to={`/phones/${phone.id}`}>
+        {products.map((phone, index) => (
+          <Link to={`/phones/${phone.id}`} key={phone.id + index}>
             <PhoneCard {...phone.card}></PhoneCard>
           </Link>
         ))}

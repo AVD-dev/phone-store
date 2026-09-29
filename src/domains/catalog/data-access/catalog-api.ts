@@ -1,8 +1,20 @@
 import type { GetProductsParams } from "./catalog-api.types";
-import { catalogFetch } from "./catalog-fetch";
 import type { ProductSummaryDto } from "./product-summary.dto";
 
 const PRODUCTS_URL = import.meta.env.VITE_API_URL;
+
+const catalogFetch = (
+  input: RequestInfo | URL,
+  init: RequestInit = {},
+): Promise<Response> => {
+  return fetch(input, {
+    ...init,
+    headers: {
+      "x-api-key": import.meta.env.VITE_API_KEY,
+      ...init.headers,
+    },
+  });
+};
 
 export async function getProducts(
   params: GetProductsParams = {},
