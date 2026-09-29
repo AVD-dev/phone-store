@@ -1,4 +1,4 @@
-import type { GetProductsParams } from "./catalog-api.types";
+import type { GetProductsParams } from "./get-products.dto";
 import type { ProductSummaryDto } from "./product-summary.dto";
 
 const PRODUCTS_URL = import.meta.env.VITE_API_URL;
