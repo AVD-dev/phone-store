@@ -12,6 +12,9 @@ import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phon
 import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
 import { useCart } from "../../../cart/state/use-cart";
 import type { CartItem } from "../../../cart/state/cart.types";
+import type { PhoneListItemViewModel } from "../phone-list/phone-list.viewmodel";
+import { toPhoneCardViewModel } from "../phone-list/phone-list.mapper";
+import PhoneCard from "../../ui/phone-card/phone-card";
 
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();
@@ -28,6 +31,14 @@ export default function PhoneDetailPage() {
   const phoneSpecifications: PhoneSpecificationProps | null = phoneSource
     ? toProductSpecificationsViewModel(phoneSource)
     : null;
+
+  const getMappedPhoneCards = (): PhoneListItemViewModel[] => {
+    if (!phoneSource) return [];
+
+    return phoneSource.similarProducts.map((phone) =>
+      toPhoneCardViewModel(phone),
+    );
+  };
 
   useEffect(() => {
     if (!phoneId) return;
@@ -71,6 +82,21 @@ export default function PhoneDetailPage() {
         {phoneSpecifications && (
           <PhoneSpecifications {...phoneSpecifications}></PhoneSpecifications>
         )}
+
+        <div className="similar-phones">
+          <span className="similar-phones__title">SIMILAR ITEMS</span>
+          <div className="similar-phones__carrousel">
+            {getMappedPhoneCards().map((phone) => (
+              <Link
+                to={`/phones/${phone.id}`}
+                key={phone.id}
+                className="similar-phones__carrousel--space"
+              >
+                <PhoneCard {...phone.card}></PhoneCard>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );

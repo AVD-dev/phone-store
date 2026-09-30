@@ -14,3 +14,26 @@
   flex-direction: column;
   gap: 5rem;
 }
+
+.similar-phones {
+  padding-bottom: 5rem;
+
+  &__title {
+    padding-bottom: 2.5rem;
+  }
+
+  &__carrousel {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2.5rem;
+    scrollbar-width: thin;
+
+    &--space {
+      flex: 0 0 auto;
+      width: 21.437rem;
+    }
+  }
+}
