@@ -5,9 +5,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import ColorSelector from "./color-selector";
 
 const colors = [
-  { id: "Black", value: "#000000" },
-  { id: "Blue", value: "#0000ff" },
-  { id: "White", value: "#ffffff" },
+  { id: "Black", value: "#000000", imageUrl: "" },
+  { id: "Blue", value: "#0000ff", imageUrl: "" },
+  { id: "White", value: "#ffffff", imageUrl: "" },
 ];
 
 describe("ColorSelector", () => {
@@ -56,7 +56,11 @@ describe("ColorSelector", () => {
     await user.click(radios[1]);
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith("#0000ff");
+    expect(onChange).toHaveBeenCalledWith({
+      id: "Blue",
+      value: "#0000ff",
+      imageUrl: "",
+    });
   });
 
   it("should display the selected color id", () => {

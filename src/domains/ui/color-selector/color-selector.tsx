@@ -18,24 +18,24 @@ export default function ColorSelector({
   return (
     <div className="color-selector">
       <div className="color-options">
-        {colors.map((color) => (
+        {colors.map((option) => (
           <label
-            key={color.id}
+            key={option.id}
             className="color-options__item"
-            onMouseEnter={() => setHoveredColorId(color.id)}
+            onMouseEnter={() => setHoveredColorId(option.id)}
             onMouseLeave={() => setHoveredColorId(undefined)}
           >
             <input
               type="radio"
               name="color"
-              value={color.value}
-              checked={selectedColor === color.value}
-              onChange={() => onChange(color.value)}
+              value={option.value}
+              checked={selectedColor === option.value}
+              onChange={() => onChange(option)}
             />
 
             <span
               className="color-selector__swatch"
-              style={{ backgroundColor: color.value }}
+              style={{ backgroundColor: option.value }}
             />
           </label>
         ))}
