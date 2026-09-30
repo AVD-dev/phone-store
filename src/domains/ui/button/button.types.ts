@@ -5,4 +5,6 @@ export interface ButtonProps {
   outlined?: boolean;
   enablePadding?: boolean;
   icon?: ReactNode;
+  disabled?: boolean;
+  onClick: () => void;
 }

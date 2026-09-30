@@ -9,6 +9,10 @@
   color: white;
   justify-content: center;
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
   &--outline {
     border: none;
     background-color: transparent;

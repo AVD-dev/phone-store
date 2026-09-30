@@ -6,6 +6,8 @@ export default function Button({
   outlined = false,
   enablePadding = true,
   icon,
+  disabled = false,
+  onClick,
 }: ButtonProps) {
   const classes = [
     "button-container",
@@ -16,7 +18,12 @@ export default function Button({
     .join(" ");
 
   return (
-    <button className={classes} type="button">
+    <button
+      className={classes}
+      disabled={disabled}
+      type="button"
+      onClick={onClick}
+    >
       {icon}
       {label}
     </button>
