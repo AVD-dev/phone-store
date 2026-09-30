@@ -4,13 +4,19 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProductById } from "../../data-access/catalog-api";
+import type {
+  ProductDetailDto,
+  ProductSpecsDto,
+} from "../../data-access/product-summary.dto";
+
 import { toProductInfoViewModel } from "./phone-detail.mapper";
+import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
 
 import type { ProductInfoData } from "../../ui/product-info/product-info.types";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
-import type { ProductDetailDto } from "../../data-access/product-summary.dto";
+
 import { useCart } from "../../../cart/state/use-cart";
-import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
+
 import PhoneDetailPage from "./phone-detail-page";
 
 let selectedColor = "#000000";
@@ -56,11 +62,18 @@ vi.mock("../../ui/phone-specifications/phone-specifications", () => ({
   ),
 }));
 
+vi.mock("../../ui/phone-card/phone-card", () => ({
+  default: () => <div data-testid="phone-card" />,
+}));
+
 const productMock = {
   id: "1",
   name: "Phone X",
   basePrice: 699,
-
+  brand: "APPLE",
+  description: "mock description",
+  rating: 2,
+  specs: {} as ProductSpecsDto,
   colorOptions: [
     {
       name: "Black",
@@ -73,7 +86,6 @@ const productMock = {
       imageUrl: "phone-green.png",
     },
   ],
-
   storageOptions: [
     {
       capacity: "128 GB",
@@ -84,6 +96,7 @@ const productMock = {
       price: 899,
     },
   ],
+  similarProducts: [],
 } as ProductDetailDto;
 
 const phoneInfoMock = {
@@ -100,7 +113,9 @@ const specificationsMock = {
 
 const getProductByIdMock = vi.mocked(getProductById);
 const useCartMock = vi.mocked(useCart);
+
 const toProductInfoViewModelMock = vi.mocked(toProductInfoViewModel);
+
 const toProductSpecificationsViewModelMock = vi.mocked(
   toProductSpecificationsViewModel,
 );
