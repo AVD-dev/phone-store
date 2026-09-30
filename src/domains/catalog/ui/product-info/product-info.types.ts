@@ -1,4 +1,4 @@
-import type { ColorOption } from "../../../ui/color-selector/color-selector.types";
+import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
 
 export interface ProductInfoProps {
   data: ProductInfoData;

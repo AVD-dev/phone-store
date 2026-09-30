@@ -6,7 +6,7 @@ import { toPhoneCardViewModel } from "./phone-list.mapper";
 import { Link } from "react-router-dom";
 import type { PhoneListItemViewModel } from "./phone-list.viewmodel";
 import type { ProductDto } from "../../data-access/product-summary.dto";
-import Button from "../../../ui/button/button";
+import Button from "../../../../components/button/button";
 
 export default function PhoneListPage() {
   const [searchValue, setSearchValue] = useState("");

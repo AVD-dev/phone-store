@@ -1,4 +1,4 @@
-import type { ColorOption } from "../../../ui/color-selector/color-selector.types";
+import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
 import type { ProductDetailDto } from "../../data-access/product-summary.dto";
 import type {
   ProductInfoData,

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import SelectColor from "../../../ui/color-selector/color-selector";
+import SelectColor from "../../../../components/color-selector/color-selector";
 import "./product-info.scss";
-import Button from "../../../ui/button/button";
+import Button from "../../../../components/button/button";
 import type { ProductInfoProps } from "./product-info.types";
-import type { ColorOption } from "../../../ui/color-selector/color-selector.types";
+import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
 
 export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState<ColorOption>();

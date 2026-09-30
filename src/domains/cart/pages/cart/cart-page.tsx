@@ -1,5 +1,5 @@
 import "./cart-page.scss";
-import Button from "../../../ui/button/button";
+import Button from "../../../../components/button/button";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../state/cart.context";
 
