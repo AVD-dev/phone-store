@@ -59,17 +59,17 @@
 
     &--small {
       color: #79736d;
-      font-size: 0.625rem;
+      font-size: var(--font-size-xs);
     }
 
     &--medium {
-      font-size: 0.75rem;
+      font-size: var(--font-size-sm);
     }
   }
 
   &__price {
     display: inline-flex;
     align-items: flex-end;
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
   }
 }

@@ -1,9 +1,9 @@
 .specifications {
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
 
   &__title {
     display: inline-flex;
-    font-size: 1.25rem;
+    font-size: var(--font-size-lg);
     margin-bottom: 2.5rem;
   }
 

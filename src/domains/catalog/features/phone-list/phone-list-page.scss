@@ -6,7 +6,11 @@
 
   &__content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16.3rem), 1fr));
+    justify-content: center;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, 16.3rem), 23.5rem)
+    );
   }
 }
 .searcher {
@@ -31,6 +35,6 @@
     display: inline-flex;
     height: 1.5rem;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
   }
 }

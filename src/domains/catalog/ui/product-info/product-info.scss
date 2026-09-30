@@ -4,11 +4,11 @@
   gap: 2.5rem;
 
   &--medium {
-    font-size: 0.875rem;
+    font-size: var(--font-size-md);
   }
 
   &--small {
-    font-size: 0.75rem;
+    font-size: var(--font-size-sm);
   }
 
   .product-title {
