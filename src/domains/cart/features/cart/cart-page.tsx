@@ -1,3 +1,68 @@
+import "./cart-page.scss";
+import { useCart } from "../../state/use-cart";
+import Button from "../../../ui/button/button";
+import { useNavigate } from "react-router-dom";
+
 export default function CartPage() {
-  return <h1>CART work</h1>;
+  const navigate = useNavigate();
+  const { items, removeItem } = useCart();
+
+  const totalPrice = items.reduce((acc, next) => acc + next.price, 0);
+  const hasItems = !!items.length;
+  const handleNavigate = () => {
+    navigate("/list");
+  };
+
+  return (
+    <div className="cart-page">
+      <span className="cart-page__title">CART ({items.length})</span>
+      <div className="cart-page__products">
+        {items.map((item) => (
+          <div className="product">
+            <img src={item.color.imageUrl} width="160px" height="197px"></img>
+            <div className="product__detail">
+              <div className="product__detail--column">
+                <span>{item.name.toUpperCase()}</span>
+                <span>
+                  {item.storage} | {item.color.name.toUpperCase()}
+                </span>
+              </div>
+              <span>{item.price} EUR</span>
+              <Button
+                className="cart-page__delete"
+                label="Eliminar"
+                severity="danger"
+                variant="ghost"
+                onClick={() => removeItem(item.id)}
+              ></Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <footer className="cart-footer">
+        {hasItems && (
+          <div className="cart-footer__total">
+            <span>TOTAL</span>
+            <span>{totalPrice} EUR</span>
+          </div>
+        )}
+        <div className="cart-footer__actions">
+          <Button
+            onClick={handleNavigate}
+            label="CONTINUE SHOPPING"
+            variant="outlined"
+            className="cart-footer__actions--stretch"
+          />
+          {hasItems && (
+            <Button
+              onClick={() => {}}
+              label="PAY"
+              className="cart-footer__actions--stretch"
+            />
+          )}
+        </div>
+      </footer>
+    </div>
+  );
 }
