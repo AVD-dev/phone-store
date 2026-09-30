@@ -1,7 +1,7 @@
 import "./cart-link.scss";
 import { Link, useLocation } from "react-router-dom";
 import CartIcon from "../../../../assets/icons/cart.svg?react";
-import { useCart } from "../../state/use-cart";
+import { useCart } from "../../state/cart.context";
 
 export default function CartLink() {
   const { items } = useCart();

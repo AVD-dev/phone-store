@@ -1,4 +1,5 @@
-import type { CartAction, CartItem } from "./cart.types";
+import type { CartItem } from "../types/cart.types";
+import type { CartAction } from "./cart-state.types";
 
 export function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
   switch (action.type) {

@@ -15,9 +15,8 @@ import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
 import type { ProductInfoData } from "../../ui/product-info/product-info.types";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 
-import { useCart } from "../../../cart/state/use-cart";
-
 import PhoneDetailPage from "./phone-detail-page";
+import { useCart } from "../../../cart/state/cart.context";
 
 let selectedColor = "#000000";
 let selectedPrice = 899;
@@ -26,7 +25,7 @@ vi.mock("../../data-access/catalog-api", () => ({
   getProductById: vi.fn(),
 }));
 
-vi.mock("../../../cart/state/use-cart", () => ({
+vi.mock("../../../cart/state/cart.context", () => ({
   useCart: vi.fn(),
 }));
 

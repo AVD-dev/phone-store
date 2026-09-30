@@ -1,7 +1,7 @@
 import "./cart-page.scss";
-import { useCart } from "../../state/use-cart";
 import Button from "../../../ui/button/button";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../state/cart.context";
 
 export default function CartPage() {
   const navigate = useNavigate();

@@ -1,15 +1,4 @@
-export interface CartItem {
-  id: string;
-  name: string;
-  storage: string;
-  color: CartItemColor;
-  price: number;
-}
-
-export interface CartItemColor {
-  name: string;
-  imageUrl: string;
-}
+import type { CartItem } from "../types/cart.types";
 
 export type CartAction =
   | {

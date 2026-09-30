@@ -10,11 +10,11 @@ import type { ProductInfoData } from "../../ui/product-info/product-info.types";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
-import { useCart } from "../../../cart/state/use-cart";
-import type { CartItem } from "../../../cart/state/cart.types";
 import type { PhoneListItemViewModel } from "../phone-list/phone-list.viewmodel";
 import { toPhoneCardViewModel } from "../phone-list/phone-list.mapper";
 import PhoneCard from "../../ui/phone-card/phone-card";
+import type { CartItem } from "../../../cart/types/cart.types";
+import { useCart } from "../../../cart/state/cart.context";
 
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();

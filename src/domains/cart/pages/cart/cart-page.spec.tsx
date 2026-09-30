@@ -4,9 +4,9 @@ import { MemoryRouter, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import CartPage from "./cart-page";
-import { useCart } from "../../state/use-cart";
+import { useCart } from "../../state/cart.context";
 
-vi.mock("../../state/use-cart", () => ({
+vi.mock("../../state/cart.context", () => ({
   useCart: vi.fn(),
 }));
 
