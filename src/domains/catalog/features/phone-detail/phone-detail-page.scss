@@ -1,0 +1,16 @@
+.link-container {
+  display: inline-flex;
+  align-items: center;
+  height: 2.75rem;
+
+  &__icon {
+    width: 1.5rem;
+    height: 0.7rem;
+  }
+}
+
+.phone-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
