@@ -1,0 +1,25 @@
+.specifications {
+  font-size: 0.75rem;
+
+  &__title {
+    display: inline-flex;
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  &__row {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    min-height: 2.937rem;
+    border-bottom: thin solid;
+
+    &:first-of-type {
+      border-top: thin solid;
+    }
+
+    &--field-size {
+      min-width: 9.375rem;
+    }
+  }
+}
