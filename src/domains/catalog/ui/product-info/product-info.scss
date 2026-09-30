@@ -1,3 +1,10 @@
+@use "../../../../styles" as styles;
+
+.product-image {
+  width: 17.062rem;
+  height: 16.25rem;
+}
+
 .product-info {
   display: flex;
   flex-direction: column;
@@ -61,5 +68,18 @@
     flex-direction: column;
     gap: 1.375rem;
     padding-top: 2rem;
+  }
+}
+
+@media (min-width: styles.$breakpoint-tablet) {
+  .info-container {
+    display: flex;
+    gap: 3.47rem;
+    align-items: center;
+  }
+
+  .product-image {
+    width: 21rem;
+    height: 25.875rem;
   }
 }

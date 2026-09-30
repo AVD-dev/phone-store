@@ -19,7 +19,7 @@ export default function CartPage() {
       <div className="cart-page__products">
         {items.map((item) => (
           <div className="product">
-            <img src={item.color.imageUrl} width="160px" height="197px"></img>
+            <img className="product__image" src={item.color.imageUrl}></img>
             <div className="product__detail">
               <div className="product__detail--column">
                 <span>{item.name.toUpperCase()}</span>

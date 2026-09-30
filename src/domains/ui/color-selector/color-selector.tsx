@@ -40,9 +40,7 @@ export default function ColorSelector({
           </label>
         ))}
       </div>
-      {displayedColor && (
-        <span className="color-selector__label">{displayedColor}</span>
-      )}
+      <span className="color-selector__label">{displayedColor}</span>
     </div>
   );
 }

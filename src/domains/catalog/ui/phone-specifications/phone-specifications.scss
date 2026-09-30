@@ -1,3 +1,5 @@
+@use "../../../../styles/breakpoints" as styles;
+
 .specifications {
   font-size: var(--font-size-sm);
 
@@ -21,5 +23,11 @@
     &--field-size {
       min-width: 9.375rem;
     }
+  }
+}
+
+@media (min-width: styles.$breakpoint-tablet) {
+  .specifications__row--field-size {
+    min-width: 18.75rem;
   }
 }

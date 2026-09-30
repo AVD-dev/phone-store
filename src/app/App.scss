@@ -1,3 +1,5 @@
+@use "../../src/styles" as styles;
+
 .app {
   display: grid;
   grid-template-columns: 1fr;
@@ -19,5 +21,17 @@
   grid-area: content;
   overflow-y: auto;
   min-height: 0;
-  padding: 0 1rem;
+  padding: 0 1rem 1.5rem;
+}
+
+@media (min-width: styles.$breakpoint-tablet) {
+  .app__main {
+    padding: 0 2.5rem 1.5rem;
+  }
+}
+
+@media (min-width: styles.$breakpoint-desktop) {
+  .app__main {
+    padding: 0 6.25rem 1.5rem;
+  }
 }

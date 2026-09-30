@@ -1,3 +1,5 @@
+@use "../../../../styles" as styles;
+
 .link-container {
   display: inline-flex;
   align-items: center;
@@ -16,10 +18,10 @@
 }
 
 .similar-phones {
-  padding-bottom: 5rem;
-
   &__title {
+    display: block;
     padding-bottom: 2.5rem;
+    font-size: var(--font-size-lg);
   }
 
   &__carrousel {
@@ -35,5 +37,11 @@
       flex: 0 0 auto;
       width: 21.437rem;
     }
+  }
+}
+
+@media (min-width: styles.$breakpoint-desktop) {
+  .phone-detail {
+    padding: 0 16.25rem;
   }
 }

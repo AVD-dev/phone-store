@@ -1,3 +1,5 @@
+@use "../../../../styles" as styles;
+
 .phone-list {
   display: flex;
   flex-direction: column;
@@ -13,6 +15,7 @@
     );
   }
 }
+
 .searcher {
   height: 5.4rem;
   padding: 0.75rem 0;
@@ -36,5 +39,11 @@
     height: 1.5rem;
     align-items: center;
     font-size: var(--font-size-sm);
+  }
+}
+
+@media (min-width: styles.$breakpoint-desktop) {
+  .phone-list__content {
+    grid-template-columns: repeat(auto-fit, 21.5rem);
   }
 }
