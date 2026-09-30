@@ -1,6 +1,6 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProductById } from "../../data-access/catalog-api";
@@ -66,6 +66,18 @@ vi.mock("../../ui/phone-card/phone-card", () => ({
   default: () => <div data-testid="phone-card" />,
 }));
 
+vi.mock("react-router-dom", async () => {
+  const actual =
+    await vi.importActual<typeof import("react-router-dom")>(
+      "react-router-dom",
+    );
+
+  return {
+    ...actual,
+    useNavigate: vi.fn(),
+  };
+});
+
 const productMock = {
   id: "1",
   name: "Phone X",
@@ -120,6 +132,8 @@ const toProductSpecificationsViewModelMock = vi.mocked(
   toProductSpecificationsViewModel,
 );
 
+const useNavigateMock = vi.mocked(useNavigate);
+
 function renderPage(phoneId = "1") {
   return render(
     <MemoryRouter initialEntries={[`/phones/${phoneId}`]}>
@@ -132,9 +146,11 @@ function renderPage(phoneId = "1") {
 
 describe("PhoneDetailPage", () => {
   const addItem = vi.fn();
+  const navigate = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
+    useNavigateMock.mockReturnValue(navigate);
 
     selectedColor = "#000000";
     selectedPrice = 899;
@@ -222,6 +238,7 @@ describe("PhoneDetailPage", () => {
       },
       price: 899,
     });
+    expect(navigate).toHaveBeenCalledWith("/cart");
   });
 
   it("should not add item when selected color does not exist", async () => {

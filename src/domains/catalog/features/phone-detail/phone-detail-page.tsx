@@ -1,6 +1,6 @@
 import "./phone-detail-page.scss";
 import ArrowLeftIcon from "../../../../assets/icons/arrow-left.svg?react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductInfo from "../../ui/product-info/product-info";
 import { useEffect, useState } from "react";
 import { getProductById } from "../../data-access/catalog-api";
@@ -19,6 +19,7 @@ import PhoneCard from "../../ui/phone-card/phone-card";
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();
   const { addItem } = useCart();
+  const navigate = useNavigate();
 
   const [phoneSource, setProductDetail] = useState<ProductDetailDto | null>(
     null,
@@ -65,6 +66,7 @@ export default function PhoneDetailPage() {
     };
 
     addItem(cartItem);
+    navigate("/cart");
   };
 
   return (
