@@ -14,14 +14,14 @@
   }
 
   &--filled {
-    background-color: black;
-    color: white;
+    background-color: var(--color-background-dark);
+    color: var(--color-text-contrast);
   }
 
   &--outlined,
   &--ghost {
-    background-color: transparent;
-    color: black;
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
   }
 
   &--ghost {
@@ -29,6 +29,6 @@
   }
 
   &--danger {
-    color: red;
+    color: var(--color-text-danger);
   }
 }

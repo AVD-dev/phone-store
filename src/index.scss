@@ -1,10 +1,23 @@
 :root {
+  // Typography
   --font-size-xs: 0.625rem;
   --font-size-sm: 0.75rem;
   --font-size-md: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: 1.5rem;
+
+  // Text
+  --color-text-primary: #000000;
+  --color-text-secondary: #79736d;
+  --color-text-contrast: #ffffff;
+  --color-text-muted: #aaaaaa;
+  --color-text-danger: #df0000;
+
+  // Background
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f3f2f2;
+  --color-background-dark: #1b1a18;
 }
 
 *,
@@ -38,10 +51,10 @@ p {
 }
 
 a {
-  color: black;
+  color: var(--color-text-primary);
   text-decoration: none;
 }
 
 input::placeholder {
-  color: #aaaaaa;
+  color: var(--color-text-muted);
 }

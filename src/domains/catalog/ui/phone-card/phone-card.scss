@@ -10,7 +10,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: #000;
+    background: var(--color-background-dark);
     transform: translateY(100%);
     opacity: 0.7;
     z-index: -1;
@@ -26,11 +26,11 @@
 
   &:hover &__price,
   &:hover &__detail--medium {
-    color: white;
+    color: var(--color-text-contrast);
   }
 
   &:hover &__detail--small {
-    color: lightgray;
+    color: var(--color-text-muted);
   }
 
   &--column {
@@ -58,7 +58,7 @@
     gap: 0.25rem;
 
     &--small {
-      color: #79736d;
+      color: var(--color-text-secondary);
       font-size: var(--font-size-xs);
     }
 
