@@ -8,7 +8,7 @@ function App() {
       <div className="app__header">
         <Header />
       </div>
-      <main className="app__content">
+      <main className="app__main">
         <Outlet />
       </main>
     </div>
