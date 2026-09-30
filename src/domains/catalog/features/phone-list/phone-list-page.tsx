@@ -5,13 +5,13 @@ import { getProducts } from "../../data-access/catalog-api";
 import { toPhoneCardViewModel } from "./phone-list.mapper";
 import { Link } from "react-router-dom";
 import type { PhoneListItemViewModel } from "./phone-list.viewmodel";
-import type { ProductSummaryDto } from "../../data-access/product-summary.dto";
+import type { ProductDto } from "../../data-access/product-summary.dto";
 
 export default function PhoneListPage() {
   const [searchValue, setSearchValue] = useState("");
   const [products, setProducts] = useState<PhoneListItemViewModel[]>([]);
 
-  const handlerProducts = (products: ProductSummaryDto[]): void => {
+  const handlerProducts = (products: ProductDto[]): void => {
     const uniqueProducts = Array.from(
       new Map(products.map((item) => [item.id, item])).values(),
     );

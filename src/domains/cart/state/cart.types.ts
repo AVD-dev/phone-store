@@ -1,10 +1,14 @@
 export interface CartItem {
   id: string;
   name: string;
-  imageUrl: string;
   storage: string;
-  color: string;
-  price: string;
+  color: CartItemColor;
+  price: number;
+}
+
+export interface CartItemColor {
+  name: string;
+  imageUrl: string;
 }
 
 export type CartAction =

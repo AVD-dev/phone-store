@@ -1,4 +1,10 @@
-import { act, cleanup, render, screen } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -36,6 +42,7 @@ describe("PhoneListPage", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
     cleanup();
   });
 
@@ -64,10 +71,6 @@ describe("PhoneListPage", () => {
   });
 
   it("should search products 300ms after the search value changes", async () => {
-    const user = userEvent.setup({
-      advanceTimers: vi.advanceTimersByTime,
-    });
-
     getProductsMock.mockResolvedValue([]);
 
     render(
@@ -77,28 +80,34 @@ describe("PhoneListPage", () => {
     );
 
     await act(async () => {
-      vi.advanceTimersByTime(300);
+      await vi.advanceTimersByTimeAsync(300);
     });
 
     getProductsMock.mockClear();
 
     const input = screen.getByPlaceholderText("Search for a smartphone...");
 
-    await user.type(input, "Samsung");
+    fireEvent.change(input, {
+      target: {
+        value: "Samsung",
+      },
+    });
 
+    expect(input).toHaveValue("Samsung");
     expect(getProductsMock).not.toHaveBeenCalled();
 
     await act(async () => {
-      vi.advanceTimersByTime(299);
+      await vi.advanceTimersByTimeAsync(299);
     });
 
     expect(getProductsMock).not.toHaveBeenCalled();
 
     await act(async () => {
-      vi.advanceTimersByTime(1);
+      await vi.advanceTimersByTimeAsync(1);
     });
 
     expect(getProductsMock).toHaveBeenCalledTimes(1);
+
     expect(getProductsMock).toHaveBeenCalledWith({
       limit: 20,
       search: "Samsung",
