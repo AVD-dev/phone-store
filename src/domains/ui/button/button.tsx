@@ -3,16 +3,18 @@ import type { ButtonProps } from "./button.types";
 
 export default function Button({
   label,
-  outlined = false,
-  enablePadding = true,
   icon,
   disabled = false,
+  variant = "filled",
+  severity = "default",
+  className = "",
   onClick,
 }: ButtonProps) {
   const classes = [
     "button-container",
-    outlined && "button-container--outline",
-    enablePadding && "button-container--space",
+    `button-container--${variant}`,
+    `button-container--${severity}`,
+    className,
   ]
     .filter(Boolean)
     .join(" ");

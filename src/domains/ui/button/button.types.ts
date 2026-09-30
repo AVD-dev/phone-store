@@ -2,9 +2,10 @@ import type { ReactNode } from "react";
 
 export interface ButtonProps {
   label: string;
-  outlined?: boolean;
-  enablePadding?: boolean;
+  className?: string;
   icon?: ReactNode;
+  variant?: "filled" | "outlined" | "ghost";
   disabled?: boolean;
+  severity?: "default" | "danger";
   onClick: () => void;
 }

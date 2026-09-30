@@ -1,49 +1,68 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import Button from "./button";
 import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import Button from "./button";
 
 describe("Button", () => {
-  const onClick = vi.fn();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
+  afterEach(() => {
+    cleanup();
   });
 
-  afterEach(() => cleanup());
-
   it("should render the label", () => {
-    render(<Button label="Add to cart" onClick={onClick} />);
+    render(<Button label="Add to cart" onClick={vi.fn()} />);
 
     expect(
       screen.getByRole("button", { name: "Add to cart" }),
     ).toBeInTheDocument();
   });
 
-  it("should apply padding by default", () => {
-    render(<Button label="Add to cart" onClick={onClick} />);
+  it("should apply filled variant by default", () => {
+    render(<Button label="Add" onClick={vi.fn()} />);
 
-    expect(screen.getByRole("button", { name: "Add to cart" })).toHaveClass(
+    expect(screen.getByRole("button", { name: "Add" })).toHaveClass(
       "button-container",
-      "button-container--space",
+      "button-container--filled",
     );
   });
 
-  it("should apply outline class when outlined is true", () => {
-    render(<Button label="Add to cart" outlined onClick={onClick} />);
+  it("should apply outlined variant", () => {
+    render(<Button label="Continue" variant="outlined" onClick={vi.fn()} />);
 
-    expect(screen.getByRole("button", { name: "Add to cart" })).toHaveClass(
-      "button-container--outline",
+    expect(screen.getByRole("button", { name: "Continue" })).toHaveClass(
+      "button-container--outlined",
     );
   });
 
-  it("should not apply padding class when enablePadding is false", () => {
-    render(
-      <Button label="Add to cart" enablePadding={false} onClick={onClick} />,
-    );
+  it("should apply ghost variant", () => {
+    render(<Button label="Remove" variant="ghost" onClick={vi.fn()} />);
 
-    expect(screen.getByRole("button", { name: "Add to cart" })).not.toHaveClass(
-      "button-container--space",
+    expect(screen.getByRole("button", { name: "Remove" })).toHaveClass(
+      "button-container--ghost",
+    );
+  });
+
+  it("should apply default severity by default", () => {
+    render(<Button label="Add" onClick={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "Add" })).toHaveClass(
+      "button-container--default",
+    );
+  });
+
+  it("should apply danger severity", () => {
+    render(<Button label="Remove" severity="danger" onClick={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "Remove" })).toHaveClass(
+      "button-container--danger",
+    );
+  });
+
+  it("should apply custom className", () => {
+    render(<Button label="Pay" className="cart-action" onClick={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "Pay" })).toHaveClass(
+      "cart-action",
     );
   });
 
@@ -52,7 +71,7 @@ describe("Button", () => {
       <Button
         label="Back"
         icon={<span data-testid="button-icon">←</span>}
-        onClick={onClick}
+        onClick={vi.fn()}
       />,
     );
 
@@ -60,18 +79,42 @@ describe("Button", () => {
   });
 
   it("should not render an icon when it is not provided", () => {
-    render(<Button label="Back" onClick={onClick} />);
+    render(<Button label="Back" onClick={vi.fn()} />);
 
     expect(screen.queryByTestId("button-icon")).not.toBeInTheDocument();
   });
 
+  it("should be enabled by default", () => {
+    render(<Button label="Add" onClick={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "Add" })).toBeEnabled();
+  });
+
+  it("should be disabled when disabled is true", () => {
+    render(<Button label="Add" disabled onClick={vi.fn()} />);
+
+    expect(screen.getByRole("button", { name: "Add" })).toBeDisabled();
+  });
+
   it("should call onClick when clicked", async () => {
     const user = userEvent.setup();
+    const onClick = vi.fn();
 
-    render(<Button label="Add to cart" onClick={onClick} />);
+    render(<Button label="Add" onClick={onClick} />);
 
-    await user.click(screen.getByRole("button", { name: "Add to cart" }));
+    await user.click(screen.getByRole("button", { name: "Add" }));
 
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not call onClick when disabled", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+
+    render(<Button label="Add" disabled onClick={onClick} />);
+
+    await user.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(onClick).not.toHaveBeenCalled();
   });
 });
