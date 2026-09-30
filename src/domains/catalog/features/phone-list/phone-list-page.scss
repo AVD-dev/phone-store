@@ -26,12 +26,14 @@
   top: 0;
   background: var(--color-background-primary);
   z-index: 1;
+  position: relative;
 
   &__field {
     height: 1.7rem;
     border: none;
     border-bottom: thin solid black;
     width: 100%;
+    padding-right: 1rem;
   }
 
   &__count {
@@ -39,6 +41,13 @@
     height: 1.5rem;
     align-items: center;
     font-size: var(--font-size-sm);
+  }
+
+  &__clear {
+    position: absolute;
+    right: 0;
+    top: 22%;
+    padding: 0;
   }
 }
 
