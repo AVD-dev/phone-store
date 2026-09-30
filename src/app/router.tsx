@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import PhoneDetailPage from "../domains/catalog/features/phone-detail/phone-detail-page";
-import PhoneListPage from "../domains/catalog/features/phone-list/phone-list-page";
-import CartPage from "../domains/cart/features/cart/cart-page";
+import PhoneDetailPage from "../domains/catalog/pages/phone-detail/phone-detail-page";
+import PhoneListPage from "../domains/catalog/pages/phone-list/phone-list-page";
+import CartPage from "../domains/cart/pages/cart/cart-page";
 import App from "./App";
 
 export const router = createBrowserRouter([

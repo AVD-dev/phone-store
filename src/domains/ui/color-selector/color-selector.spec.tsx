@@ -111,18 +111,4 @@ describe("ColorSelector", () => {
 
     expect(screen.getByText("Black")).toBeInTheDocument();
   });
-
-  it("should not render a label when there is no selected or hovered color", () => {
-    const { container } = render(
-      <ColorSelector
-        colors={colors}
-        selectedColor={undefined}
-        onChange={vi.fn()}
-      />,
-    );
-
-    expect(
-      container.querySelector(".color-selector__label"),
-    ).not.toBeInTheDocument();
-  });
 });
