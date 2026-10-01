@@ -35,3 +35,23 @@
     padding: 0 6.25rem 1.5rem;
   }
 }
+
+@keyframes page-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(root) {
+  animation: page-fade-out 1s ease forwards;
+  z-index: 2;
+}
+
+::view-transition-new(root) {
+  animation: none;
+  z-index: 1;
+}

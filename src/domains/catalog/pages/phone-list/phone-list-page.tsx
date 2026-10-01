@@ -49,7 +49,7 @@ export default function PhoneListPage() {
       </div>
       <div className="phone-list__content">
         {phones.map((phone) => (
-          <Link to={`/phones/${phone.id}`} key={phone.id}>
+          <Link to={`/phones/${phone.id}`} key={phone.id} viewTransition>
             <PhoneCard {...phone}></PhoneCard>
           </Link>
         ))}

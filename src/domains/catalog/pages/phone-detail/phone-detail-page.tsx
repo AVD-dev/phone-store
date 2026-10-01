@@ -52,7 +52,7 @@ export default function PhoneDetailPage() {
   return (
     <>
       <div className="link-container">
-        <Link to="/list">
+        <Link to="/list" viewTransition>
           <ArrowLeftIcon className="link-container__icon"></ArrowLeftIcon>
           <span>BACK</span>
         </Link>
@@ -78,6 +78,7 @@ export default function PhoneDetailPage() {
                 to={`/phones/${phone.id}`}
                 key={phone.id}
                 className="similar-phones__carrousel--space"
+                viewTransition
               >
                 <PhoneCard {...phone}></PhoneCard>
               </Link>

@@ -11,7 +11,7 @@ export default function CartLink() {
   return (
     <>
       {showCartButton && (
-        <Link to="/cart" className="cart-link">
+        <Link to="/cart" className="cart-link" viewTransition>
           <CartIcon />
           <span>{items.length}</span>
         </Link>

@@ -1,9 +1,20 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, useParams } from "react-router-dom";
 import PhoneDetailPage from "../domains/catalog/pages/phone-detail/phone-detail-page";
 import PhoneListPage from "../domains/catalog/pages/phone-list/phone-list-page";
 import CartPage from "../domains/cart/pages/cart/cart-page";
 import App from "./App";
 import { Suspense } from "react";
+import Spinner from "../components/spinner/spinner";
+
+const PhoneDetailRoute = () => {
+  const { phoneId } = useParams();
+
+  return (
+    <Suspense key={phoneId} fallback={<Spinner />}>
+      <PhoneDetailPage />
+    </Suspense>
+  );
+};
 
 export const router = createBrowserRouter([
   {
@@ -16,18 +27,14 @@ export const router = createBrowserRouter([
       {
         path: "/list",
         element: (
-          <Suspense fallback="Skeletons WIP...">
+          <Suspense fallback={<Spinner />}>
             <PhoneListPage />
           </Suspense>
         ),
       },
       {
         path: "/phones/:phoneId",
-        element: (
-          <Suspense fallback="Skeletons WIP...">
-            <PhoneDetailPage />
-          </Suspense>
-        ),
+        element: <PhoneDetailRoute />,
       },
       {
         path: "/cart",
