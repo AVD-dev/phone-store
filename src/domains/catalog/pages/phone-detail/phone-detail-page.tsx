@@ -4,9 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductInfo from "../../../../components/product-info/product-info";
 import { use, useState } from "react";
 import { getProductByIdSuspense } from "../../data-access/catalog-api";
-import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
-import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
-import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
+import PhoneSpecifications from "../../../../components/phone-specifications/phone-specifications";
+import { toPhoneSpecificationsViewModel } from "../../view-models/phone-specifications/phone-specifications.mapper";
 
 import PhoneCard from "../../../../components/phone-card/phone-card";
 import { useCart } from "../../../cart/state/cart.context";
@@ -31,8 +30,7 @@ export default function PhoneDetailPage() {
   const phoneSource: ProductDetail = use(getProductByIdSuspense(phoneId));
   const productInfo = toProductInfoViewModel(phoneSource);
 
-  const phoneSpecifications: PhoneSpecificationProps =
-    toProductSpecificationsViewModel(phoneSource);
+  const phoneSpecifications = toPhoneSpecificationsViewModel(phoneSource);
 
   const getMappedPhoneCards = (): CatalogPhoneCardViewModel[] =>
     phoneSource.similarProducts.map((phone) => toPhoneCardViewModel(phone));

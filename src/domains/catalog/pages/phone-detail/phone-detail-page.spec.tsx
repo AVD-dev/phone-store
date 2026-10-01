@@ -9,8 +9,8 @@ import type {
   ProductSpecifications,
 } from "../../types/product-detail.type";
 
-import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
-import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
+import { toPhoneSpecificationsViewModel } from "../../view-models/phone-specifications/phone-specifications.mapper";
+import type { PhoneSpecificationsProps } from "../../../../components/phone-specifications/phone-specifications.types";
 
 import PhoneDetailPage from "./phone-detail-page";
 import { useCart } from "../../../cart/state/cart.context";
@@ -27,9 +27,12 @@ vi.mock("../../../cart/state/cart.context", () => ({
   useCart: vi.fn(),
 }));
 
-vi.mock("../../ui/phone-specifications/phone-specification.mapper", () => ({
-  toProductSpecificationsViewModel: vi.fn(),
-}));
+vi.mock(
+  "../../view-models/phone-specifications/phone-specifications.mapper",
+  () => ({
+    toPhoneSpecificationsViewModel: vi.fn(),
+  }),
+);
 
 vi.mock("../../../../components/product-info/product-info", () => ({
   default: ({
@@ -61,8 +64,8 @@ vi.mock("../../../../components/product-info/product-info", () => ({
   ),
 }));
 
-vi.mock("../../ui/phone-specifications/phone-specifications", () => ({
-  default: (props: PhoneSpecificationProps) => (
+vi.mock("../../../../components/phone-specifications/phone-specifications", () => ({
+  default: (props: PhoneSpecificationsProps) => (
     <div data-testid="phone-specifications">{props.brand}</div>
   ),
 }));
@@ -123,14 +126,14 @@ const productMock: ProductDetail = {
 
 const specificationsMock = {
   brand: "Samsung",
-} as PhoneSpecificationProps;
+} as PhoneSpecificationsProps;
 
 const getProductByIdSuspenseMock = vi.mocked(getProductByIdSuspense);
 
 const useCartMock = vi.mocked(useCart);
 
-const toProductSpecificationsViewModelMock = vi.mocked(
-  toProductSpecificationsViewModel,
+const toPhoneSpecificationsViewModelMock = vi.mocked(
+  toPhoneSpecificationsViewModel,
 );
 
 const useNavigateMock = vi.mocked(useNavigate);
@@ -177,7 +180,7 @@ describe("PhoneDetailPage", () => {
 
     getProductByIdSuspenseMock.mockReturnValue(fulfilledPromise(productMock));
 
-    toProductSpecificationsViewModelMock.mockReturnValue(specificationsMock);
+    toPhoneSpecificationsViewModelMock.mockReturnValue(specificationsMock);
   });
 
   afterEach(() => {
@@ -194,7 +197,7 @@ describe("PhoneDetailPage", () => {
   it("should map product specifications", () => {
     renderPage();
 
-    expect(toProductSpecificationsViewModelMock).toHaveBeenCalledWith(
+    expect(toPhoneSpecificationsViewModelMock).toHaveBeenCalledWith(
       productMock,
     );
   });

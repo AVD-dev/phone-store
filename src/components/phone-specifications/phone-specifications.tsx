@@ -1,7 +1,7 @@
-import type { PhoneSpecificationProps } from "./phone-specification.types";
+import type { PhoneSpecificationsProps } from "./phone-specifications.types";
 import "./phone-specifications.scss";
 
-export default function PhoneSpecifications(props: PhoneSpecificationProps) {
+export default function PhoneSpecifications(props: PhoneSpecificationsProps) {
   return (
     <div className="specifications">
       <span className="specifications__title">SPECIFICATIONS</span>

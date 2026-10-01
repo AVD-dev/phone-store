@@ -1,4 +1,4 @@
-export interface PhoneSpecificationProps {
+export interface PhoneSpecificationsProps {
   brand: string;
   name: string;
   description: string;

@@ -1,9 +1,9 @@
+import type { PhoneSpecificationsProps } from "../../../../components/phone-specifications/phone-specifications.types";
 import type { ProductDetail } from "../../types/product-detail.type";
-import type { PhoneSpecificationProps } from "./phone-specification.types";
 
-export function toProductSpecificationsViewModel(
+export function toPhoneSpecificationsViewModel(
   product: ProductDetail,
-): PhoneSpecificationProps {
+): PhoneSpecificationsProps {
   return {
     brand: product.brand,
     name: product.name,
