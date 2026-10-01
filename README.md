@@ -1,78 +1,119 @@
-# React + TypeScript + Vite
+# Phone Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web de una tienda de smartphones. Permite consultar el catálogo, buscar productos, revisar sus especificaciones y variantes, explorar artículos similares y gestionar un carrito persistente.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Listado de hasta 20 smartphones obtenidos desde una API externa.
+- Búsqueda por texto con *debounce* de 300 ms.
+- Página de detalle con colores, capacidades, precios y especificaciones.
+- Selección de color y almacenamiento antes de añadir un producto al carrito.
+- Carrusel de productos similares.
+- Carrito con cálculo del total y eliminación de artículos.
+- Persistencia del carrito en `localStorage`.
+- Diseño responsive.
+- Pruebas unitarias y de componentes.
 
-## React Compiler
+## Tecnologías
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- React 19
+- TypeScript
+- Vite 8
+- React Router 7
+- Sass
+- Vitest y Testing Library
+- ESLint
+- React Compiler
+- SVGR
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Requisitos
 
-## Expanding the ESLint configuration
+- Node.js 22.13 o una versión posterior compatible.
+- npm.
+- URL y clave de acceso para la API de productos.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Instalación
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Clona el repositorio y entra en el directorio del proyecto.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd phone-store
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Instala las dependencias.
 
+   ```bash
+   npm ci
+   ```
+
+3. Crea un archivo `.env` en la raíz:
+
+   ```env
+   VITE_API_URL=https://api.example.com/products
+   VITE_API_KEY=your-api-key
+   ```
+
+   `VITE_API_URL` debe apuntar al endpoint base del catálogo. La aplicación añade el identificador del producto a esa URL para consultar el detalle.
+
+4. Inicia el servidor de desarrollo.
+
+   ```bash
+   npm run dev
+   ```
+
+5. Abre la dirección que Vite muestre en la terminal, normalmente `http://localhost:5173`.
+
+> Las variables con prefijo `VITE_` quedan expuestas en el código del navegador. La clave configurada debe estar preparada para uso público o protegida mediante un backend intermedio.
+
+## Scripts disponibles
+
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Inicia el entorno de desarrollo con recarga en caliente. |
+| `npm run build` | Comprueba TypeScript y genera la versión de producción en `dist/`. |
+| `npm run preview` | Sirve localmente la compilación de producción. |
+| `npm run test` | Ejecuta Vitest en modo interactivo. |
+| `npm run test:run` | Ejecuta una única pasada de la suite de pruebas. |
+| `npm run lint` | Analiza el proyecto con ESLint. |
+
+## Rutas
+
+| Ruta | Vista |
+| --- | --- |
+| `/` | Redirige al catálogo. |
+| `/list` | Listado y búsqueda de smartphones. |
+| `/phones/:phoneId` | Detalle y configuración de un producto. |
+| `/cart` | Contenido y total del carrito. |
+
+## Estructura del proyecto
+
+```text
+src/
+├── app/                 # Aplicación, cabecera y configuración de rutas
+├── assets/              # Imágenes e iconos SVG
+├── components/          # Componentes compartidos
+├── domains/
+│   ├── cart/            # Estado, persistencia, páginas y UI del carrito
+│   └── catalog/         # API, modelos, páginas y UI del catálogo
+├── styles/              # Estilos y breakpoints compartidos
+├── test/                # Configuración global de las pruebas
+├── index.scss           # Estilos globales
+└── main.tsx             # Punto de entrada
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+El código se organiza por dominios. Cada dominio agrupa sus páginas, componentes visuales, tipos, estado y acceso a datos. Los DTO recibidos desde la API se transforman mediante *mappers* antes de llegar a las vistas que lo necesitan.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Validación antes de publicar
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run lint
+npm run test:run
+npm run build
 ```
+
+La compilación resultante se guarda en `dist/` y puede desplegarse en cualquier servicio de alojamiento estático. Como la aplicación usa rutas del lado del cliente, el servidor debe redirigir las rutas desconocidas a `index.html`.
+
+## Estado actual
+
+El flujo de catálogo y carrito está implementado. El botón de pago forma parte de la interfaz, pero todavía no está conectado a una pasarela de pago.
