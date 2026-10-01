@@ -5,9 +5,24 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import ColorSelector from "./color-selector";
 
 const colors = [
-  { id: "Black", value: "#000000", imageUrl: "" },
-  { id: "Blue", value: "#0000ff", imageUrl: "" },
-  { id: "White", value: "#ffffff", imageUrl: "" },
+  {
+    id: "black-id",
+    name: "Black",
+    value: "#000000",
+    imageUrl: "",
+  },
+  {
+    id: "blue-id",
+    name: "Blue",
+    value: "#0000ff",
+    imageUrl: "",
+  },
+  {
+    id: "white-id",
+    name: "White",
+    value: "#ffffff",
+    imageUrl: "",
+  },
 ];
 
 describe("ColorSelector", () => {
@@ -29,17 +44,19 @@ describe("ColorSelector", () => {
     render(
       <ColorSelector
         colors={colors}
-        selectedColor="#0000ff"
+        selectedColor="blue-id"
         onChange={vi.fn()}
       />,
     );
 
     const radios = screen.getAllByRole("radio");
 
+    expect(radios[0]).not.toBeChecked();
     expect(radios[1]).toBeChecked();
+    expect(radios[2]).not.toBeChecked();
   });
 
-  it("should call onChange with the selected color value", async () => {
+  it("should call onChange with the selected color option", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
 
@@ -57,29 +74,30 @@ describe("ColorSelector", () => {
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith({
-      id: "Blue",
+      id: "blue-id",
+      name: "Blue",
       value: "#0000ff",
       imageUrl: "",
     });
   });
 
-  it("should display the selected color id", () => {
+  it("should display the selected color value", () => {
     render(
       <ColorSelector
         colors={colors}
-        selectedColor="#0000ff"
+        selectedColor="blue-id"
         onChange={vi.fn()}
       />,
     );
 
-    expect(screen.getByText("Blue")).toBeInTheDocument();
+    expect(screen.getByText("#0000ff")).toBeInTheDocument();
   });
 
-  it("should display the hovered color id instead of the selected one", () => {
+  it("should display the hovered color name instead of the selected color value", () => {
     render(
       <ColorSelector
         colors={colors}
-        selectedColor="#000000"
+        selectedColor="black-id"
         onChange={vi.fn()}
       />,
     );
@@ -89,14 +107,14 @@ describe("ColorSelector", () => {
     fireEvent.mouseEnter(options[1]);
 
     expect(screen.getByText("Blue")).toBeInTheDocument();
-    expect(screen.queryByText("Black")).not.toBeInTheDocument();
+    expect(screen.queryByText("#000000")).not.toBeInTheDocument();
   });
 
-  it("should restore the selected color id when hover ends", () => {
+  it("should restore the selected color value when hover ends", () => {
     render(
       <ColorSelector
         colors={colors}
-        selectedColor="#000000"
+        selectedColor="black-id"
         onChange={vi.fn()}
       />,
     );
@@ -106,9 +124,11 @@ describe("ColorSelector", () => {
     fireEvent.mouseEnter(options[1]);
 
     expect(screen.getByText("Blue")).toBeInTheDocument();
+    expect(screen.queryByText("#000000")).not.toBeInTheDocument();
 
     fireEvent.mouseLeave(options[1]);
 
-    expect(screen.getByText("Black")).toBeInTheDocument();
+    expect(screen.getByText("#000000")).toBeInTheDocument();
+    expect(screen.queryByText("Blue")).not.toBeInTheDocument();
   });
 });

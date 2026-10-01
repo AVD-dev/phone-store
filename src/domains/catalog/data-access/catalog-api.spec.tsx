@@ -94,17 +94,33 @@ describe("getProducts", () => {
 });
 
 describe("GetProductById", () => {
-  it("should get a product by id", async () => {
-    const product = {
+  it("should get a product by id and map it to domain", async () => {
+    const productDto = {
       id: "123",
+      brand: "Apple",
       name: "Phone X",
+      description: "Test phone",
       basePrice: 699,
-      storageOptions: [],
-      colorOptions: [],
+      rating: 4.5,
+      specs: {},
+      storageOptions: [
+        {
+          capacity: "128 GB",
+          price: 699,
+        },
+      ],
+      colorOptions: [
+        {
+          name: "Black",
+          hexCode: "#000000",
+          imageUrl: "phone-black.png",
+        },
+      ],
+      similarProducts: [],
     };
 
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(JSON.stringify(product), {
+      new Response(JSON.stringify(productDto), {
         status: 200,
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +136,32 @@ describe("GetProductById", () => {
 
     expect(requestUrl.toString()).toBe(`${import.meta.env.VITE_API_URL}/123`);
 
-    expect(result).toEqual(product);
+    expect(result).toEqual({
+      id: "123",
+      brand: "Apple",
+      name: "Phone X",
+      description: "Test phone",
+      basePrice: 699,
+      rating: 4.5,
+      specs: {},
+      imageUrl: "phone-black.png",
+      colors: [
+        {
+          id: expect.any(String),
+          name: "Black",
+          hexCode: "#000000",
+          imageUrl: "phone-black.png",
+        },
+      ],
+      storageOptions: [
+        {
+          id: expect.any(String),
+          capacity: "128 GB",
+          price: 699,
+        },
+      ],
+      similarProducts: [],
+    });
   });
 
   it("should throw when get product by id fails", async () => {

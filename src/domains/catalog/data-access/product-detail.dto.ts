@@ -24,13 +24,13 @@ export type ProductSpecsDto = {
   screenRefreshRate: string;
 };
 
-type ProductColorDto = {
+export type ProductColorDto = {
   name: string;
   hexCode: string;
   imageUrl: string;
 };
 
-type ProductStorageDto = {
+export type ProductStorageDto = {
   capacity: string;
   price: number;
 };

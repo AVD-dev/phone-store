@@ -3,13 +3,19 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import ProductInfo from "./product-info";
+import type {
+  ProductDetail,
+  ProductSpecifications,
+} from "../../types/product-detail.type";
 
 const storageOptions = [
   {
+    id: "1",
     capacity: "128 GB",
     price: 799,
   },
   {
+    id: "2",
     capacity: "256 GB",
     price: 899,
   },
@@ -18,22 +24,30 @@ const storageOptions = [
 const colors = [
   {
     id: "Black",
-    value: "#000000",
+    name: "firstColor",
+    hexCode: "#000000",
     imageUrl: "phone-black.png",
   },
   {
     id: "Green",
-    value: "#00ff00",
+    name: "secondColor",
+    hexCode: "#00ff00",
     imageUrl: "phone-green.png",
   },
 ];
 
-const data = {
-  imageUrl: "phone.png",
+const data: ProductDetail = {
+  id: "randomId",
+  brand: "someBrand",
   name: "Phone X",
+  description: "",
   basePrice: 699,
-  storageOptions,
+  rating: 1,
+  specs: {} as ProductSpecifications,
+  imageUrl: "phone.png",
   colors,
+  storageOptions,
+  similarProducts: [],
 };
 
 describe("ProductInfo", () => {
@@ -43,9 +57,7 @@ describe("ProductInfo", () => {
     render(<ProductInfo data={data} onAdd={vi.fn()} />);
 
     expect(screen.getByRole("img")).toHaveAttribute("src", "phone.png");
-
     expect(screen.getByText("Phone X")).toBeInTheDocument();
-
     expect(screen.getByText("From 699 EUR")).toBeInTheDocument();
 
     expect(screen.getByRole("button", { name: "AÑADIR" })).toBeInTheDocument();
@@ -68,9 +80,7 @@ describe("ProductInfo", () => {
     await user.click(storage256);
 
     expect(storage256).toBeChecked();
-
     expect(screen.getByText("899 EUR")).toBeInTheDocument();
-
     expect(screen.queryByText("From 699 EUR")).not.toBeInTheDocument();
   });
 
@@ -101,7 +111,6 @@ describe("ProductInfo", () => {
     expect(screen.getByText("COLOR: PICK YOUR FAVORITE.")).toBeInTheDocument();
 
     expect(screen.getByDisplayValue("#000000")).toBeInTheDocument();
-
     expect(screen.getByDisplayValue("#00ff00")).toBeInTheDocument();
   });
 
@@ -139,7 +148,7 @@ describe("ProductInfo", () => {
     expect(image).toHaveAttribute("src", "phone-green.png");
   });
 
-  it("should call onAdd with selected color and storage price", async () => {
+  it("should call onAdd with selected color id and storage price", async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
 
@@ -148,9 +157,13 @@ describe("ProductInfo", () => {
     await user.click(screen.getByDisplayValue("899"));
     await user.click(screen.getByDisplayValue("#000000"));
 
-    await user.click(screen.getByRole("button", { name: "AÑADIR" }));
+    await user.click(
+      screen.getByRole("button", {
+        name: "AÑADIR",
+      }),
+    );
 
     expect(onAdd).toHaveBeenCalledTimes(1);
-    expect(onAdd).toHaveBeenCalledWith("#000000", 899);
+    expect(onAdd).toHaveBeenCalledWith("Black", 899);
   });
 });

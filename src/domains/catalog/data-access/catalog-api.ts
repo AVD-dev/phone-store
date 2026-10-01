@@ -1,3 +1,5 @@
+import type { ProductDetail } from "../types/product-detail.type";
+import { mapProductDetailToDomain } from "./catalog.mappers";
 import type { ProductDetailDto } from "./product-detail.dto";
 import type {
   GetProductSummaryParams,
@@ -45,7 +47,7 @@ export async function getProducts(
   return response.json();
 }
 
-export async function getProductById(id: string): Promise<ProductDetailDto> {
+export async function getProductById(id: string): Promise<ProductDetail> {
   const url = new URL(`${PRODUCTS_URL}/${id}`);
   const response = await catalogFetch(url);
 
@@ -53,5 +55,7 @@ export async function getProductById(id: string): Promise<ProductDetailDto> {
     throw new Error(`Failed to load product by ID: ${response.status}`);
   }
 
-  return response.json();
+  const dto: ProductDetailDto = await response.json();
+
+  return mapProductDetailToDomain(dto);
 }

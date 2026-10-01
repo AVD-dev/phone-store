@@ -1,6 +1,7 @@
 export interface ColorOption {
   id: string;
   value: string;
+  name: string;
   imageUrl: string;
 }
 

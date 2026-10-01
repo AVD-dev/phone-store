@@ -4,21 +4,19 @@ import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProductById } from "../../data-access/catalog-api";
+import type {
+  ProductDetail,
+  ProductSpecifications,
+} from "../../types/product-detail.type";
 
-import { toProductInfoViewModel } from "./phone-detail.mapper";
 import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
 
-import type { ProductInfoData } from "../../ui/product-info/product-info.types";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 
 import PhoneDetailPage from "./phone-detail-page";
 import { useCart } from "../../../cart/state/cart.context";
-import type {
-  ProductDetailDto,
-  ProductSpecsDto,
-} from "../../data-access/product-detail.dto";
 
-let selectedColor = "#000000";
+let selectedColor = "black-id";
 let selectedPrice = 899;
 
 vi.mock("../../data-access/catalog-api", () => ({
@@ -27,10 +25,6 @@ vi.mock("../../data-access/catalog-api", () => ({
 
 vi.mock("../../../cart/state/cart.context", () => ({
   useCart: vi.fn(),
-}));
-
-vi.mock("./phone-detail.mapper", () => ({
-  toProductInfoViewModel: vi.fn(),
 }));
 
 vi.mock("./phone-specification.mapper", () => ({
@@ -42,8 +36,8 @@ vi.mock("../../ui/product-info/product-info", () => ({
     data,
     onAdd,
   }: {
-    data: ProductInfoData;
-    onAdd: (color: string, price: number) => void;
+    data: ProductDetail;
+    onAdd: (colorId: string, price: number) => void;
   }) => (
     <div data-testid="product-info">
       <span>{data.name}</span>
@@ -77,21 +71,24 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-const productMock = {
+const productMock: ProductDetail = {
   id: "1",
-  name: "Phone X",
-  basePrice: 699,
   brand: "APPLE",
+  name: "Phone X",
   description: "mock description",
+  basePrice: 699,
   rating: 2,
-  specs: {} as ProductSpecsDto,
-  colorOptions: [
+  specs: {} as ProductSpecifications,
+  imageUrl: "phone-black.png",
+  colors: [
     {
+      id: "black-id",
       name: "Black",
       hexCode: "#000000",
       imageUrl: "phone-black.png",
     },
     {
+      id: "green-id",
       name: "Green",
       hexCode: "#00ff00",
       imageUrl: "phone-green.png",
@@ -99,33 +96,26 @@ const productMock = {
   ],
   storageOptions: [
     {
+      id: "128-id",
       capacity: "128 GB",
       price: 799,
     },
     {
+      id: "256-id",
       capacity: "256 GB",
       price: 899,
     },
   ],
   similarProducts: [],
-} as ProductDetailDto;
-
-const phoneInfoMock = {
-  imageUrl: "phone.png",
-  name: "Phone X",
-  basePrice: 699,
-  storageOptions: [],
-  colors: [],
-} as ProductInfoData;
+};
 
 const specificationsMock = {
   brand: "Samsung",
 } as PhoneSpecificationProps;
 
 const getProductByIdMock = vi.mocked(getProductById);
-const useCartMock = vi.mocked(useCart);
 
-const toProductInfoViewModelMock = vi.mocked(toProductInfoViewModel);
+const useCartMock = vi.mocked(useCart);
 
 const toProductSpecificationsViewModelMock = vi.mocked(
   toProductSpecificationsViewModel,
@@ -149,9 +139,10 @@ describe("PhoneDetailPage", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
     useNavigateMock.mockReturnValue(navigate);
 
-    selectedColor = "#000000";
+    selectedColor = "black-id";
     selectedPrice = 899;
 
     useCartMock.mockReturnValue({
@@ -161,8 +152,6 @@ describe("PhoneDetailPage", () => {
     });
 
     getProductByIdMock.mockResolvedValue(productMock);
-
-    toProductInfoViewModelMock.mockReturnValue(phoneInfoMock);
 
     toProductSpecificationsViewModelMock.mockReturnValue(specificationsMock);
   });
@@ -181,16 +170,14 @@ describe("PhoneDetailPage", () => {
     expect(getProductByIdMock).toHaveBeenCalledWith("123");
   });
 
-  it("should map the loaded product", async () => {
+  it("should map product specifications", async () => {
     renderPage();
 
     await waitFor(() => {
-      expect(toProductInfoViewModelMock).toHaveBeenCalledWith(productMock);
+      expect(toProductSpecificationsViewModelMock).toHaveBeenCalledWith(
+        productMock,
+      );
     });
-
-    expect(toProductSpecificationsViewModelMock).toHaveBeenCalledWith(
-      productMock,
-    );
   });
 
   it("should render product info and specifications", async () => {
@@ -237,13 +224,14 @@ describe("PhoneDetailPage", () => {
       },
       price: 899,
     });
+
     expect(navigate).toHaveBeenCalledWith("/cart");
   });
 
   it("should not add item when selected color does not exist", async () => {
     const user = userEvent.setup();
 
-    selectedColor = "#invalid";
+    selectedColor = "invalid-id";
 
     renderPage();
 
@@ -254,6 +242,7 @@ describe("PhoneDetailPage", () => {
     await user.click(addButton);
 
     expect(addItem).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it("should not add item when selected storage does not exist", async () => {
@@ -270,5 +259,6 @@ describe("PhoneDetailPage", () => {
     await user.click(addButton);
 
     expect(addItem).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 });

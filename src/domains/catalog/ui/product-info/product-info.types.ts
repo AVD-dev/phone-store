@@ -1,19 +1,6 @@
-import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
+import type { ProductDetail } from "../../types/product-detail.type";
 
 export interface ProductInfoProps {
-  data: ProductInfoData;
+  data: ProductDetail;
   onAdd: (hexCode: string, storagePrice: number) => void;
-}
-
-export interface ProductInfoData {
-  imageUrl: string;
-  name: string;
-  basePrice: number;
-  storageOptions: StorageOption[];
-  colors: ColorOption[];
-}
-
-export interface StorageOption {
-  price: number;
-  capacity: string;
 }

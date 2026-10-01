@@ -1,8 +1,8 @@
-import type { ProductDetailDto } from "../../data-access/product-detail.dto";
+import type { ProductDetail } from "../../types/product-detail.type";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 
 export function toProductSpecificationsViewModel(
-  product: ProductDetailDto,
+  product: ProductDetail,
 ): PhoneSpecificationProps {
   return {
     brand: product.brand,

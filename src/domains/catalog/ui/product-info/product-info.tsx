@@ -1,12 +1,13 @@
 import { useState } from "react";
-import SelectColor from "../../../../components/color-selector/color-selector";
 import "./product-info.scss";
 import Button from "../../../../components/button/button";
 import type { ProductInfoProps } from "./product-info.types";
 import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
+import type { ProductColor } from "../../types/product-detail.type";
+import ColorSelector from "../../../../components/color-selector/color-selector";
 
 export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
-  const [selectedColor, setSelectedColor] = useState<ColorOption>();
+  const [selectedColor, setSelectedColor] = useState<ProductColor>();
   const [selectedStoragePrice, setSelectedStoragePrice] = useState<number>();
 
   const priceLabel = selectedStoragePrice
@@ -19,13 +20,25 @@ export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
     ? selectedColor.imageUrl
     : data.imageUrl;
 
+  const colorOptions: ColorOption[] = data.colors.map(
+    ({ hexCode, ...data }) => ({
+      ...data,
+      value: hexCode,
+    }),
+  );
+
   const handleOnAdd = (): void => {
     if (selectedColor && selectedStoragePrice) {
-      onAdd(selectedColor.value, selectedStoragePrice);
+      onAdd(selectedColor.id, selectedStoragePrice);
       return;
     }
 
     return;
+  };
+
+  const handleOnChangeSelectedColor = (optionId: string): void => {
+    const color = data.colors.find((c) => c.id === optionId);
+    setSelectedColor(color);
   };
 
   return (
@@ -66,11 +79,13 @@ export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
                 <span className="product-info--small">
                   COLOR: PICK YOUR FAVORITE.
                 </span>
-                <SelectColor
-                  colors={data.colors}
-                  selectedColor={selectedColor?.value}
-                  onChange={setSelectedColor}
-                ></SelectColor>
+                <ColorSelector
+                  colors={colorOptions}
+                  selectedColor={selectedColor?.id}
+                  onChange={(colorOption) =>
+                    handleOnChangeSelectedColor(colorOption.id)
+                  }
+                ></ColorSelector>
               </div>
             )}
           </div>
