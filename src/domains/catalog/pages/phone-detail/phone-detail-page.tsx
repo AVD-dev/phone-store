@@ -7,12 +7,12 @@ import { getProductById } from "../../data-access/catalog-api";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
-import type { PhoneListItemViewModel } from "../phone-list/phone-list.viewmodel";
-import { toPhoneCardViewModel } from "../phone-list/phone-list.mapper";
+import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
 import PhoneCard from "../../ui/phone-card/phone-card";
 import type { CartItem } from "../../../cart/types/cart.types";
 import { useCart } from "../../../cart/state/cart.context";
 import type { ProductDetail } from "../../types/product-detail.type";
+import type { PhoneCardProps } from "../../ui/phone-card/phone-card.types";
 
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();
@@ -25,7 +25,7 @@ export default function PhoneDetailPage() {
     ? toProductSpecificationsViewModel(phoneSource)
     : null;
 
-  const getMappedPhoneCards = (): PhoneListItemViewModel[] => {
+  const getMappedPhoneCards = (): PhoneCardProps[] => {
     if (!phoneSource) return [];
 
     return phoneSource.similarProducts.map((phone) =>
@@ -86,7 +86,7 @@ export default function PhoneDetailPage() {
                 key={phone.id}
                 className="similar-phones__carrousel--space"
               >
-                <PhoneCard {...phone.card}></PhoneCard>
+                <PhoneCard {...phone}></PhoneCard>
               </Link>
             ))}
           </div>

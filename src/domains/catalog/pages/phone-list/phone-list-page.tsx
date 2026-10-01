@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import "./phone-list-page.scss";
 import PhoneCard from "../../ui/phone-card/phone-card";
 import { getProducts } from "../../data-access/catalog-api";
-import { toPhoneCardViewModel } from "./phone-list.mapper";
+import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
 import { Link } from "react-router-dom";
-import type { PhoneListItemViewModel } from "./phone-list.viewmodel";
 import type { ProductSummaryDto } from "../../data-access/product-summary.dto";
 import Button from "../../../../components/button/button";
+import type { PhoneCardProps } from "../../ui/phone-card/phone-card.types";
 
 export default function PhoneListPage() {
   const [searchValue, setSearchValue] = useState("");
-  const [products, setProducts] = useState<PhoneListItemViewModel[]>([]);
+  const [products, setProducts] = useState<PhoneCardProps[]>([]);
 
   const handlerProducts = (products: ProductSummaryDto[]): void => {
     const uniqueProducts = Array.from(
@@ -56,7 +56,7 @@ export default function PhoneListPage() {
       <div className="phone-list__content">
         {products.map((phone) => (
           <Link to={`/phones/${phone.id}`} key={phone.id}>
-            <PhoneCard {...phone.card}></PhoneCard>
+            <PhoneCard {...phone}></PhoneCard>
           </Link>
         ))}
       </div>
