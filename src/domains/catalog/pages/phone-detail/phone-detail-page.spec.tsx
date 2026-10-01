@@ -14,6 +14,7 @@ import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phon
 
 import PhoneDetailPage from "./phone-detail-page";
 import { useCart } from "../../../cart/state/cart.context";
+import type { ProductInfoProps } from "../../../../components/product-info/product-info.types";
 
 let selectedColor = "black-id";
 let selectedStorage = "256-id";
@@ -30,20 +31,29 @@ vi.mock("../../ui/phone-specifications/phone-specification.mapper", () => ({
   toProductSpecificationsViewModel: vi.fn(),
 }));
 
-vi.mock("../../ui/product-info/product-info", () => ({
+vi.mock("../../../../components/product-info/product-info", () => ({
   default: ({
-    data,
+    name,
+    onColorChange,
+    onStorageChange,
     onAdd,
-  }: {
-    data: ProductDetail;
-    onAdd: (colorId: string, storageId: string) => void;
-  }) => (
+  }: ProductInfoProps) => (
     <div data-testid="product-info">
-      <span>{data.name}</span>
+      <span>{name}</span>
 
       <button
         type="button"
-        onClick={() => onAdd(selectedColor, selectedStorage)}
+        onClick={() => {
+          onColorChange(selectedColor);
+          onStorageChange(selectedStorage);
+        }}
+      >
+        SELECT MOCK
+      </button>
+
+      <button
+        type="button"
+        onClick={onAdd}
       >
         ADD MOCK
       </button>
@@ -218,6 +228,7 @@ describe("PhoneDetailPage", () => {
       name: "ADD MOCK",
     });
 
+    await user.click(screen.getByRole("button", { name: "SELECT MOCK" }));
     await user.click(addButton);
 
     expect(addItem).toHaveBeenCalledTimes(1);
@@ -243,6 +254,8 @@ describe("PhoneDetailPage", () => {
 
     renderPage();
 
+    await user.click(screen.getByRole("button", { name: "SELECT MOCK" }));
+
     const addButton = screen.getByRole("button", {
       name: "ADD MOCK",
     });
@@ -259,6 +272,8 @@ describe("PhoneDetailPage", () => {
     selectedStorage = "invalid-id";
 
     renderPage();
+
+    await user.click(screen.getByRole("button", { name: "SELECT MOCK" }));
 
     const addButton = screen.getByRole("button", {
       name: "ADD MOCK",

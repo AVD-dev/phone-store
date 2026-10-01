@@ -1,8 +1,8 @@
 import "./phone-detail-page.scss";
 import ArrowLeftIcon from "../../../../assets/icons/arrow-left.svg?react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import ProductInfo from "../../ui/product-info/product-info";
-import { use } from "react";
+import ProductInfo from "../../../../components/product-info/product-info";
+import { use, useState } from "react";
 import { getProductByIdSuspense } from "../../data-access/catalog-api";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
@@ -12,6 +12,7 @@ import PhoneCard from "../../../../components/phone-card/phone-card";
 import { useCart } from "../../../cart/state/cart.context";
 import type { ProductDetail } from "../../types/product-detail.type";
 import { toCartItem } from "./phone-detail-page.mapper";
+import { toProductInfoViewModel } from "../../view-models/product-info/product-info.mapper";
 import type { CatalogPhoneCardViewModel } from "../../view-models/phone-card/phone-card.view-model";
 import { toPhoneCardViewModel } from "../../view-models/phone-card/phone-card.mapper";
 
@@ -20,11 +21,15 @@ export default function PhoneDetailPage() {
   const { addItem } = useCart();
   const navigate = useNavigate();
 
+  const [selectedColorId, setSelectedColorId] = useState<string>();
+  const [selectedStorageId, setSelectedStorageId] = useState<string>();
+
   if (!phoneId) {
     return null;
   }
 
   const phoneSource: ProductDetail = use(getProductByIdSuspense(phoneId));
+  const productInfo = toProductInfoViewModel(phoneSource);
 
   const phoneSpecifications: PhoneSpecificationProps =
     toProductSpecificationsViewModel(phoneSource);
@@ -32,8 +37,13 @@ export default function PhoneDetailPage() {
   const getMappedPhoneCards = (): CatalogPhoneCardViewModel[] =>
     phoneSource.similarProducts.map((phone) => toPhoneCardViewModel(phone));
 
-  const handleOnAdd = (colorId: string, storageId: string) => {
-    const cartItem = toCartItem(phoneSource, { colorId, storageId });
+  const handleOnAdd = () => {
+    if (!selectedColorId || !selectedStorageId) return;
+
+    const cartItem = toCartItem(phoneSource, {
+      colorId: selectedColorId,
+      storageId: selectedStorageId,
+    });
 
     if (!cartItem) return;
 
@@ -50,9 +60,14 @@ export default function PhoneDetailPage() {
         </Link>
       </div>
       <div className="phone-detail">
-        {phoneSource && (
-          <ProductInfo data={phoneSource} onAdd={handleOnAdd}></ProductInfo>
-        )}
+        <ProductInfo
+          {...productInfo}
+          selectedColorId={selectedColorId}
+          selectedStorageId={selectedStorageId}
+          onColorChange={setSelectedColorId}
+          onStorageChange={setSelectedStorageId}
+          onAdd={handleOnAdd}
+        ></ProductInfo>
         {phoneSpecifications && (
           <PhoneSpecifications {...phoneSpecifications}></PhoneSpecifications>
         )}
