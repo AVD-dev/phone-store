@@ -1,3 +1,5 @@
+import type { ProductSummary } from "./product-summary.type";
+
 export type ProductDetail = {
   id: string;
   brand: string;
@@ -9,7 +11,7 @@ export type ProductDetail = {
   imageUrl: string;
   colors: ProductColor[];
   storageOptions: ProductStorage[];
-  similarProducts: SimilarProduct[];
+  similarProducts: ProductSummary[];
 };
 
 export type ProductColor = {
@@ -34,12 +36,4 @@ export type ProductSpecifications = {
   battery: string;
   os: string;
   screenRefreshRate: string;
-};
-
-type SimilarProduct = {
-  id: string;
-  brand: string;
-  name: string;
-  basePrice: number;
-  imageUrl: string;
 };

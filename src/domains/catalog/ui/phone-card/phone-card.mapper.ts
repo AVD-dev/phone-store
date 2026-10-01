@@ -1,9 +1,7 @@
-import type { ProductSummaryDto } from "../../data-access/product-summary.dto";
+import type { ProductSummary } from "../../types/product-summary.type";
 import type { PhoneCardProps } from "./phone-card.types";
 
-export function toPhoneCardViewModel(
-  product: ProductSummaryDto,
-): PhoneCardProps {
+export function toPhoneCardViewModel(product: ProductSummary): PhoneCardProps {
   return {
     id: product.id,
     imageUrl: product.imageUrl,

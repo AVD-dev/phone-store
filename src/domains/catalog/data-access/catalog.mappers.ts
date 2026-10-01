@@ -3,12 +3,28 @@ import type {
   ProductDetail,
   ProductStorage,
 } from "../types/product-detail.type";
+import type { ProductSummary } from "../types/product-summary.type";
 import type {
   ProductColorDto,
   ProductDetailDto,
   ProductStorageDto,
 } from "./product-detail.dto";
+import type { ProductSummaryDto } from "./product-summary.dto";
 
+// SUMMARY
+export const mapProductSummaryToDomain = (
+  product: ProductSummaryDto,
+): ProductSummary => {
+  return {
+    id: product.id,
+    brand: product.brand,
+    name: product.name,
+    basePrice: product.basePrice,
+    imageUrl: product.imageUrl,
+  };
+};
+
+// PRODUCT
 export const mapProductDetailToDomain = (
   product: ProductDetailDto,
 ): ProductDetail => {

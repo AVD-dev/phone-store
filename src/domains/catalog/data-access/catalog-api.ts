@@ -1,5 +1,9 @@
 import type { ProductDetail } from "../types/product-detail.type";
-import { mapProductDetailToDomain } from "./catalog.mappers";
+import type { ProductSummary } from "../types/product-summary.type";
+import {
+  mapProductDetailToDomain,
+  mapProductSummaryToDomain,
+} from "./catalog.mappers";
 import type { ProductDetailDto } from "./product-detail.dto";
 import type {
   GetProductSummaryParams,
@@ -23,7 +27,7 @@ const catalogFetch = (
 
 export async function getProducts(
   params: GetProductSummaryParams = {},
-): Promise<ProductSummaryDto[]> {
+): Promise<ProductSummary[]> {
   const url = new URL(PRODUCTS_URL);
 
   if (params.search) {
@@ -43,8 +47,9 @@ export async function getProducts(
   if (!response.ok) {
     throw new Error(`Failed to load products: ${response.status}`);
   }
+  const dto: ProductSummaryDto[] = await response.json();
 
-  return response.json();
+  return dto.map(mapProductSummaryToDomain);
 }
 
 export async function getProductById(id: string): Promise<ProductDetail> {
