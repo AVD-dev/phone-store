@@ -14,7 +14,7 @@ export default function ColorSelector({
   )?.name;
 
   const displayedColor = hoveredColorName || selectedColorValue;
-  console.log(hoveredColorName, selectedColorValue);
+
   return (
     <div className="color-selector">
       <div className="color-options">

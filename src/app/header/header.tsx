@@ -1,6 +1,6 @@
 import "./header.scss";
 import logo from "../../assets/images/mbst.svg";
-import CartLink from "../../domains/cart/ui/cart-link/cart-link";
+import CartLink from "../../domains/cart/features/cart-link/cart-link";
 
 export default function Header() {
   return (
