@@ -90,19 +90,65 @@ Aplicación web de una tienda de smartphones. Permite consultar el catálogo, bu
 
 ```text
 src/
-├── app/                 # Aplicación, cabecera y configuración de rutas
-├── assets/              # Imágenes e iconos SVG
-├── components/          # Componentes compartidos
+├── app/                         # Shell de la aplicación y configuración de rutas
+├── assets/                      # Imágenes e iconos SVG
+├── components/                  # Componentes presentacionales compartidos
 ├── domains/
-│   ├── cart/            # Estado, persistencia, páginas y UI del carrito
-│   └── catalog/         # API, modelos, páginas y UI del catálogo
-├── styles/              # Estilos y breakpoints compartidos
-├── test/                # Configuración global de las pruebas
-├── index.scss           # Estilos globales
-└── main.tsx             # Punto de entrada
+│   ├── cart/
+│   │   ├── data-access/         # Persistencia del carrito
+│   │   ├── features/            # Funcionalidades conectadas del carrito
+│   │   ├── pages/               # Páginas del dominio
+│   │   ├── state/               # Contexto, reducer y contratos de estado
+│   │   └── types/               # Modelos del dominio
+│   └── catalog/
+│       ├── data-access/         # API, DTO y mappers DTO → dominio
+│       ├── hooks/               # Hooks propios del catálogo
+│       ├── pages/               # Páginas y composición
+│       ├── types/               # Modelos del dominio
+│       └── view-models/         # Mappers dominio → presentación
+├── styles/                      # Estilos y breakpoints compartidos
+├── test/                        # Configuración global de las pruebas
+├── index.scss                   # Estilos globales
+└── main.tsx                     # Punto de entrada
 ```
 
-El código se organiza por dominios. Cada dominio agrupa sus páginas, componentes visuales, tipos, estado y acceso a datos. Los DTO recibidos desde la API se transforman mediante *mappers* antes de llegar a las vistas que lo necesitan.
+## Arquitectura
+
+El proyecto utiliza una **arquitectura modular orientada a dominios, con separación por capas y features**. No implementa Feature-Sliced Design ni Clean Architecture de forma estricta, aunque adopta algunas de sus ideas: dependencias dirigidas, aislamiento del dominio y separación entre presentación y coordinación.
+
+Las responsabilidades se distribuyen de la siguiente manera:
+
+- `app` compone la aplicación, el encabezado y las rutas.
+- `components` contiene componentes visuales compartidos. Reciben datos y callbacks mediante props y no importan tipos, estado ni acceso a datos de los dominios.
+- `domains` agrupa el comportamiento por área de negocio, actualmente `catalog` y `cart`.
+- `pages` obtiene datos y compone componentes, ViewModels y features para construir una ruta completa.
+- `features` contiene capacidades conectadas a estado o navegación que pertenecen a un dominio. Por ejemplo, `cart-link` consulta el carrito y decide si debe mostrarse según la ruta actual.
+- `data-access` encapsula API, persistencia, DTO y transformaciones de datos externos.
+- `types` define los modelos internos de cada dominio.
+- `state` gestiona el estado y las operaciones propias del dominio.
+- `view-models` transforma modelos de dominio en datos preparados para componentes presentacionales.
+
+El flujo principal de datos es:
+
+```text
+API / localStorage
+       ↓
+data-access y mappers de entrada
+       ↓
+modelos de dominio
+       ↓
+ViewModel mappers / features / pages
+       ↓
+componentes presentacionales
+```
+
+### Reglas de dependencias
+
+- Los componentes de `src/components` no deben importar desde `src/domains`.
+- Los dominios pueden utilizar componentes compartidos y adaptar sus modelos a las props mediante ViewModels.
+- Los DTO no deben llegar directamente a páginas o componentes; se convierten primero en modelos del dominio.
+- Una feature puede conocer el estado y la navegación necesarios para ejecutar su caso de uso, pero debe mantener esos detalles fuera de los componentes presentacionales.
+- Las páginas coordinan una ruta completa; la lógica reutilizable o con identidad propia debe extraerse a una feature, un mapper, un hook o el estado del dominio según su responsabilidad.
 
 ## Validación antes de publicar
 
