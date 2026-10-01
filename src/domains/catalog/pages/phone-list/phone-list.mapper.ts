@@ -1,8 +1,8 @@
-import type { ProductDto } from "../../data-access/product-summary.dto";
+import type { ProductSummaryDto } from "../../data-access/product-summary.dto";
 import type { PhoneListItemViewModel } from "./phone-list.viewmodel";
 
 export function toPhoneCardViewModel(
-  product: ProductDto,
+  product: ProductSummaryDto,
 ): PhoneListItemViewModel {
   return {
     id: product.id,

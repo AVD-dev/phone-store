@@ -1,5 +1,5 @@
 import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
-import type { ProductDetailDto } from "../../data-access/product-summary.dto";
+import type { ProductDetailDto } from "../../data-access/product-detail.dto";
 import type {
   ProductInfoData,
   StorageOption,

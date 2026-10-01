@@ -1,5 +1,8 @@
-import type { GetProductsParams } from "./get-products.dto";
-import type { ProductDetailDto, ProductDto } from "./product-summary.dto";
+import type { ProductDetailDto } from "./product-detail.dto";
+import type {
+  GetProductSummaryParams,
+  ProductSummaryDto,
+} from "./product-summary.dto";
 
 const PRODUCTS_URL = import.meta.env.VITE_API_URL;
 
@@ -17,8 +20,8 @@ const catalogFetch = (
 };
 
 export async function getProducts(
-  params: GetProductsParams = {},
-): Promise<ProductDto[]> {
+  params: GetProductSummaryParams = {},
+): Promise<ProductSummaryDto[]> {
   const url = new URL(PRODUCTS_URL);
 
   if (params.search) {

@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductInfo from "../../ui/product-info/product-info";
 import { useEffect, useState } from "react";
 import { getProductById } from "../../data-access/catalog-api";
-import type { ProductDetailDto } from "../../data-access/product-summary.dto";
 import { toProductInfoViewModel } from "./phone-detail.mapper";
 import type { ProductInfoData } from "../../ui/product-info/product-info.types";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
@@ -15,6 +14,7 @@ import { toPhoneCardViewModel } from "../phone-list/phone-list.mapper";
 import PhoneCard from "../../ui/phone-card/phone-card";
 import type { CartItem } from "../../../cart/types/cart.types";
 import { useCart } from "../../../cart/state/cart.context";
+import type { ProductDetailDto } from "../../data-access/product-detail.dto";
 
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();

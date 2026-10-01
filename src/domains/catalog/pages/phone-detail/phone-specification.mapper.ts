@@ -1,4 +1,4 @@
-import type { ProductDetailDto } from "../../data-access/product-summary.dto";
+import type { ProductDetailDto } from "../../data-access/product-detail.dto";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 
 export function toProductSpecificationsViewModel(

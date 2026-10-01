@@ -4,10 +4,6 @@ import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProductById } from "../../data-access/catalog-api";
-import type {
-  ProductDetailDto,
-  ProductSpecsDto,
-} from "../../data-access/product-summary.dto";
 
 import { toProductInfoViewModel } from "./phone-detail.mapper";
 import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
@@ -17,6 +13,10 @@ import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phon
 
 import PhoneDetailPage from "./phone-detail-page";
 import { useCart } from "../../../cart/state/cart.context";
+import type {
+  ProductDetailDto,
+  ProductSpecsDto,
+} from "../../data-access/product-detail.dto";
 
 let selectedColor = "#000000";
 let selectedPrice = 899;
