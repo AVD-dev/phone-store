@@ -11,6 +11,8 @@ import type {
 } from "./product-summary.dto";
 
 const PRODUCTS_URL = import.meta.env.VITE_API_URL;
+const productDetailCache = new Map<string, Promise<ProductDetail>>();
+const productsCache = new Map<string, Promise<ProductSummary[]>>();
 
 const catalogFetch = (
   input: RequestInfo | URL,
@@ -25,7 +27,7 @@ const catalogFetch = (
   });
 };
 
-export async function getProducts(
+async function getProductsSummary(
   params: GetProductSummaryParams = {},
 ): Promise<ProductSummary[]> {
   const url = new URL(PRODUCTS_URL);
@@ -52,7 +54,24 @@ export async function getProducts(
   return dto.map(mapProductSummaryToDomain);
 }
 
-export async function getProductById(id: string): Promise<ProductDetail> {
+export function getProductSummarySuspense(
+  params: GetProductSummaryParams = {},
+): Promise<ProductSummary[]> {
+  const key = JSON.stringify(params);
+
+  const cached = productsCache.get(key);
+
+  if (cached) {
+    return cached;
+  }
+
+  const request = getProductsSummary(params);
+  productsCache.set(key, request);
+
+  return request;
+}
+
+async function getProductById(id: string): Promise<ProductDetail> {
   const url = new URL(`${PRODUCTS_URL}/${id}`);
   const response = await catalogFetch(url);
 
@@ -63,4 +82,17 @@ export async function getProductById(id: string): Promise<ProductDetail> {
   const dto: ProductDetailDto = await response.json();
 
   return mapProductDetailToDomain(dto);
+}
+
+export function getProductByIdSuspense(id: string) {
+  const cached = productDetailCache.get(id);
+
+  if (cached) {
+    return cached;
+  }
+
+  const request = getProductById(id);
+  productDetailCache.set(id, request);
+
+  return request;
 }

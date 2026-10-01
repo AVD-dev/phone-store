@@ -3,6 +3,7 @@ import PhoneDetailPage from "../domains/catalog/pages/phone-detail/phone-detail-
 import PhoneListPage from "../domains/catalog/pages/phone-list/phone-list-page";
 import CartPage from "../domains/cart/pages/cart/cart-page";
 import App from "./App";
+import { Suspense } from "react";
 
 export const router = createBrowserRouter([
   {
@@ -14,11 +15,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/list",
-        element: <PhoneListPage />,
+        element: (
+          <Suspense fallback="Skeletons WIP...">
+            <PhoneListPage />
+          </Suspense>
+        ),
       },
       {
         path: "/phones/:phoneId",
-        element: <PhoneDetailPage />,
+        element: (
+          <Suspense fallback="Skeletons WIP...">
+            <PhoneDetailPage />
+          </Suspense>
+        ),
       },
       {
         path: "/cart",

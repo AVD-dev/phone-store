@@ -1,36 +1,30 @@
-import { useEffect, useState } from "react";
+import { use, useState } from "react";
 import "./phone-list-page.scss";
 import PhoneCard from "../../ui/phone-card/phone-card";
-import { getProducts } from "../../data-access/catalog-api";
 import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
 import { Link } from "react-router-dom";
 import Button from "../../../../components/button/button";
-import type { PhoneCardProps } from "../../ui/phone-card/phone-card.types";
-import type { ProductSummary } from "../../types/product-summary.type";
+import { useDebouncedValue } from "../../hooks/use-debounced";
+import { getProductSummarySuspense } from "../../data-access/catalog-api";
 
 export default function PhoneListPage() {
   const [searchValue, setSearchValue] = useState("");
-  const [products, setProducts] = useState<PhoneCardProps[]>([]);
+  const debouncedSearchValue = useDebouncedValue<string>(searchValue, 300);
 
-  const handlerProducts = (products: ProductSummary[]): void => {
-    const uniqueProducts = Array.from(
-      new Map(products.map((item) => [item.id, item])).values(),
-    );
+  const products = use(
+    getProductSummarySuspense({
+      limit: 20,
+      search: debouncedSearchValue.trim(),
+    }),
+  );
 
-    setProducts(uniqueProducts.map((item) => toPhoneCardViewModel(item)));
-  };
+  const uniqueProducts = Array.from(
+    new Map(products.map((item) => [item.id, item])).values(),
+  );
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      getProducts({ limit: 20, search: searchValue.trim() }).then(
-        handlerProducts,
-      );
-    }, 300);
+  const phones = uniqueProducts.map(toPhoneCardViewModel);
 
-    return () => clearTimeout(timeoutId);
-  }, [searchValue]);
-
-  const resultsCount = products.length;
+  const resultsCount = phones.length;
 
   return (
     <div className="phone-list">
@@ -54,7 +48,7 @@ export default function PhoneListPage() {
         <span className="searcher__count">{resultsCount} RESULTS</span>
       </div>
       <div className="phone-list__content">
-        {products.map((phone) => (
+        {phones.map((phone) => (
           <Link to={`/phones/${phone.id}`} key={phone.id}>
             <PhoneCard {...phone}></PhoneCard>
           </Link>

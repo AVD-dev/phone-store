@@ -2,8 +2,8 @@ import "./phone-detail-page.scss";
 import ArrowLeftIcon from "../../../../assets/icons/arrow-left.svg?react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ProductInfo from "../../ui/product-info/product-info";
-import { useEffect, useState } from "react";
-import { getProductById } from "../../data-access/catalog-api";
+import { use } from "react";
+import { getProductByIdSuspense } from "../../data-access/catalog-api";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
@@ -19,35 +19,26 @@ export default function PhoneDetailPage() {
   const { addItem } = useCart();
   const navigate = useNavigate();
 
-  const [phoneSource, setProductDetail] = useState<ProductDetail | null>(null);
+  if (!phoneId) {
+    return null;
+  }
 
-  const phoneSpecifications: PhoneSpecificationProps | null = phoneSource
-    ? toProductSpecificationsViewModel(phoneSource)
-    : null;
+  const phoneSource: ProductDetail = use(getProductByIdSuspense(phoneId));
 
-  const getMappedPhoneCards = (): PhoneCardProps[] => {
-    if (!phoneSource) return [];
+  const phoneSpecifications: PhoneSpecificationProps =
+    toProductSpecificationsViewModel(phoneSource);
 
-    return phoneSource.similarProducts.map((phone) =>
-      toPhoneCardViewModel(phone),
-    );
-  };
-
-  useEffect(() => {
-    if (!phoneId) return;
-
-    getProductById(phoneId).then(setProductDetail);
-  }, [phoneId]);
+  const getMappedPhoneCards = (): PhoneCardProps[] =>
+    phoneSource.similarProducts.map((phone) => toPhoneCardViewModel(phone));
 
   const handleOnAdd = (colorId: string, storagePrice: number) => {
-    const phoneColor = phoneSource?.colors.find(
-      (color) => color.id === colorId,
-    );
-    const phoneStorage = phoneSource?.storageOptions.find(
+    const phoneColor = phoneSource.colors.find((color) => color.id === colorId);
+
+    const phoneStorage = phoneSource.storageOptions.find(
       (option) => option.price === storagePrice,
     );
 
-    if (!phoneSource || !phoneColor || !phoneStorage) return;
+    if (!phoneColor || !phoneStorage) return;
 
     const cartItem: CartItem = {
       id: phoneSource.id,

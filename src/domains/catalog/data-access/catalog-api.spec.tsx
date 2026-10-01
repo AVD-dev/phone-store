@@ -1,9 +1,12 @@
 import "@testing-library/jest-dom/vitest";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getProductById, getProducts } from "./catalog-api";
+import {
+  getProductByIdSuspense,
+  getProductSummarySuspense,
+} from "./catalog-api";
 
-describe("getProducts", () => {
+describe("getProductSummarySuspense", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
   });
@@ -18,13 +21,15 @@ describe("getProducts", () => {
       }),
     );
 
-    await getProducts();
+    await getProductSummarySuspense({
+      search: "api-key-test",
+    });
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
 
     const [url, init] = fetchMock.mock.calls[0];
 
-    expect(url.toString()).toBe(import.meta.env.VITE_API_URL);
+    expect(url.toString()).toContain(import.meta.env.VITE_API_URL);
 
     expect(init).toEqual(
       expect.objectContaining({
@@ -42,7 +47,7 @@ describe("getProducts", () => {
       }),
     );
 
-    await getProducts({
+    await getProductSummarySuspense({
       search: "Samsung",
       limit: 20,
       offset: 10,
@@ -57,10 +62,10 @@ describe("getProducts", () => {
     expect(url.searchParams.get("offset")).toBe("10");
   });
 
-  it("should return the products response", async () => {
+  it("should return the products response mapped to domain", async () => {
     const products = [
       {
-        id: "1",
+        id: "product-response-test",
         brand: "Apple",
         name: "iPhone 16",
         basePrice: 999,
@@ -77,7 +82,9 @@ describe("getProducts", () => {
       }),
     );
 
-    const result = await getProducts();
+    const result = await getProductSummarySuspense({
+      search: "response-test",
+    });
 
     expect(result).toEqual(products);
   });
@@ -89,14 +96,44 @@ describe("getProducts", () => {
       }),
     );
 
-    await expect(getProducts()).rejects.toThrow("Failed to load products: 500");
+    await expect(
+      getProductSummarySuspense({
+        search: "error-test",
+      }),
+    ).rejects.toThrow("Failed to load products: 500");
+  });
+
+  it("should reuse the cached request for the same params", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify([]), {
+        status: 200,
+      }),
+    );
+
+    const params = {
+      search: "cached-products",
+      limit: 20,
+    };
+
+    const firstRequest = getProductSummarySuspense(params);
+    const secondRequest = getProductSummarySuspense(params);
+
+    expect(firstRequest).toBe(secondRequest);
+
+    await firstRequest;
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });
 
-describe("GetProductById", () => {
+describe("getProductByIdSuspense", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("should get a product by id and map it to domain", async () => {
     const productDto = {
-      id: "123",
+      id: "product-detail-test",
       brand: "Apple",
       name: "Phone X",
       description: "Test phone",
@@ -128,16 +165,18 @@ describe("GetProductById", () => {
       }),
     );
 
-    const result = await getProductById("123");
+    const result = await getProductByIdSuspense("product-detail-test");
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
 
     const [requestUrl] = fetchMock.mock.calls[0];
 
-    expect(requestUrl.toString()).toBe(`${import.meta.env.VITE_API_URL}/123`);
+    expect(requestUrl.toString()).toBe(
+      `${import.meta.env.VITE_API_URL}/product-detail-test`,
+    );
 
     expect(result).toEqual({
-      id: "123",
+      id: "product-detail-test",
       brand: "Apple",
       name: "Phone X",
       description: "Test phone",
@@ -171,7 +210,7 @@ describe("GetProductById", () => {
       }),
     );
 
-    await expect(getProductById("123")).rejects.toThrow(
+    await expect(getProductByIdSuspense("not-found-test")).rejects.toThrow(
       "Failed to load product by ID: 404",
     );
   });

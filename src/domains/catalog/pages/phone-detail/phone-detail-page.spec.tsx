@@ -1,16 +1,15 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getProductById } from "../../data-access/catalog-api";
+import { getProductByIdSuspense } from "../../data-access/catalog-api";
 import type {
   ProductDetail,
   ProductSpecifications,
 } from "../../types/product-detail.type";
 
 import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
-
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 
 import PhoneDetailPage from "./phone-detail-page";
@@ -20,7 +19,7 @@ let selectedColor = "black-id";
 let selectedPrice = 899;
 
 vi.mock("../../data-access/catalog-api", () => ({
-  getProductById: vi.fn(),
+  getProductByIdSuspense: vi.fn(),
 }));
 
 vi.mock("../../../cart/state/cart.context", () => ({
@@ -113,7 +112,8 @@ const specificationsMock = {
   brand: "Samsung",
 } as PhoneSpecificationProps;
 
-const getProductByIdMock = vi.mocked(getProductById);
+const getProductByIdSuspenseMock = vi.mocked(getProductByIdSuspense);
+
 const useCartMock = vi.mocked(useCart);
 
 const toProductSpecificationsViewModelMock = vi.mocked(
@@ -121,6 +121,18 @@ const toProductSpecificationsViewModelMock = vi.mocked(
 );
 
 const useNavigateMock = vi.mocked(useNavigate);
+
+function fulfilledPromise<T>(value: T): Promise<T> {
+  const promise = Promise.resolve(value) as Promise<T> & {
+    status: "fulfilled";
+    value: T;
+  };
+
+  promise.status = "fulfilled";
+  promise.value = value;
+
+  return promise;
+}
 
 function renderPage(phoneId = "1") {
   return render(
@@ -150,7 +162,7 @@ describe("PhoneDetailPage", () => {
       removeItem: vi.fn(),
     });
 
-    getProductByIdMock.mockResolvedValue(productMock);
+    getProductByIdSuspenseMock.mockReturnValue(fulfilledPromise(productMock));
 
     toProductSpecificationsViewModelMock.mockReturnValue(specificationsMock);
   });
@@ -159,33 +171,29 @@ describe("PhoneDetailPage", () => {
     cleanup();
   });
 
-  it("should load product by route id", async () => {
+  it("should load product by route id", () => {
     renderPage("123");
 
-    await waitFor(() => {
-      expect(getProductByIdMock).toHaveBeenCalledWith("123");
-    });
-
-    expect(getProductByIdMock).toHaveBeenCalledTimes(1);
+    expect(getProductByIdSuspenseMock).toHaveBeenCalledTimes(1);
+    expect(getProductByIdSuspenseMock).toHaveBeenCalledWith("123");
   });
 
-  it("should map product specifications", async () => {
+  it("should map product specifications", () => {
     renderPage();
 
-    await waitFor(() => {
-      expect(toProductSpecificationsViewModelMock).toHaveBeenCalledWith(
-        productMock,
-      );
-    });
+    expect(toProductSpecificationsViewModelMock).toHaveBeenCalledWith(
+      productMock,
+    );
   });
 
-  it("should render product info and specifications", async () => {
+  it("should render product info and specifications", () => {
     renderPage();
 
-    expect(await screen.findByTestId("product-info")).toBeInTheDocument();
-
+    expect(screen.getByTestId("product-info")).toBeInTheDocument();
     expect(screen.getByText("Phone X")).toBeInTheDocument();
+
     expect(screen.getByTestId("phone-specifications")).toBeInTheDocument();
+
     expect(screen.getByText("Samsung")).toBeInTheDocument();
   });
 
@@ -203,7 +211,7 @@ describe("PhoneDetailPage", () => {
 
     renderPage();
 
-    const addButton = await screen.findByRole("button", {
+    const addButton = screen.getByRole("button", {
       name: "ADD MOCK",
     });
 
@@ -232,7 +240,7 @@ describe("PhoneDetailPage", () => {
 
     renderPage();
 
-    const addButton = await screen.findByRole("button", {
+    const addButton = screen.getByRole("button", {
       name: "ADD MOCK",
     });
 
@@ -249,7 +257,7 @@ describe("PhoneDetailPage", () => {
 
     renderPage();
 
-    const addButton = await screen.findByRole("button", {
+    const addButton = screen.getByRole("button", {
       name: "ADD MOCK",
     });
 
