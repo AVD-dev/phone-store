@@ -57,7 +57,7 @@ vi.mock("../../ui/phone-specifications/phone-specifications", () => ({
   ),
 }));
 
-vi.mock("../../ui/phone-card/phone-card", () => ({
+vi.mock("../../../../components/phone-card/phone-card", () => ({
   default: () => <div data-testid="phone-card" />,
 }));
 

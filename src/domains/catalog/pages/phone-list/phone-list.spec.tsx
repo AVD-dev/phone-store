@@ -16,7 +16,7 @@ vi.mock("../../data-access/catalog-api", () => ({
   getProductSummarySuspense: vi.fn(),
 }));
 
-vi.mock("../../ui/phone-card/phone-card", () => ({
+vi.mock("../../../../components/phone-card/phone-card", () => ({
   default: ({ name }: { name: string }) => <div>{name}</div>,
 }));
 

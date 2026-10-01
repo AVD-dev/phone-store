@@ -7,12 +7,13 @@ import { getProductByIdSuspense } from "../../data-access/catalog-api";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
-import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
-import PhoneCard from "../../ui/phone-card/phone-card";
+
+import PhoneCard from "../../../../components/phone-card/phone-card";
 import { useCart } from "../../../cart/state/cart.context";
 import type { ProductDetail } from "../../types/product-detail.type";
-import type { PhoneCardProps } from "../../ui/phone-card/phone-card.types";
 import { toCartItem } from "./phone-detail-page.mapper";
+import type { CatalogPhoneCardViewModel } from "../../view-models/phone-card/phone-card.view-model";
+import { toPhoneCardViewModel } from "../../view-models/phone-card/phone-card.mapper";
 
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();
@@ -28,7 +29,7 @@ export default function PhoneDetailPage() {
   const phoneSpecifications: PhoneSpecificationProps =
     toProductSpecificationsViewModel(phoneSource);
 
-  const getMappedPhoneCards = (): PhoneCardProps[] =>
+  const getMappedPhoneCards = (): CatalogPhoneCardViewModel[] =>
     phoneSource.similarProducts.map((phone) => toPhoneCardViewModel(phone));
 
   const handleOnAdd = (colorId: string, storageId: string) => {

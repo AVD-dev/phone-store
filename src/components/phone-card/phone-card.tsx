@@ -6,16 +6,9 @@ export default function PhoneCard({
   brand,
   labels,
   price,
-  orientation = "column",
 }: PhoneCardProps) {
   return (
-    <div
-      className={
-        orientation === "column"
-          ? "phone-card phone-card--column"
-          : "phone-card phone-card--row"
-      }
-    >
+    <div className={"phone-card phone-card--column"}>
       <img className="phone-card__image" src={imageUrl} alt={brand}></img>
       <div className="phone-card__info">
         <div className="phone-card__detail">

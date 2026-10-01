@@ -5,6 +5,10 @@
   isolation: isolate;
   overflow: hidden;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 
   &::before {
     content: "";
@@ -31,13 +35,6 @@
 
   &:hover &__detail--small {
     color: var(--color-text-muted);
-  }
-
-  &--column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
   }
 
   &__image {

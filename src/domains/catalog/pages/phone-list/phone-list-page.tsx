@@ -1,11 +1,11 @@
 import { use, useState } from "react";
 import "./phone-list-page.scss";
-import PhoneCard from "../../ui/phone-card/phone-card";
-import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
+import PhoneCard from "../../../../components/phone-card/phone-card";
 import { Link } from "react-router-dom";
 import Button from "../../../../components/button/button";
 import { useDebouncedValue } from "../../hooks/use-debounced";
 import { getProductSummarySuspense } from "../../data-access/catalog-api";
+import { toPhoneCardViewModel } from "../../view-models/phone-card/phone-card.mapper";
 
 export default function PhoneListPage() {
   const [searchValue, setSearchValue] = useState("");
