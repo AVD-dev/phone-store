@@ -7,16 +7,14 @@ export default function ColorSelector({
   selectedColor,
   onChange,
 }: ColorSelectorProps) {
-  const [hoveredColorName, setHoveredColorName] = useState<
-    string | undefined
-  >();
+  const [hoveredColorName, setHoveredColorName] = useState<string>("");
 
   const selectedColorValue = colors.find(
     (color) => color.id === selectedColor,
-  )?.value;
+  )?.name;
 
-  const displayedColor = hoveredColorName ?? selectedColorValue;
-
+  const displayedColor = hoveredColorName || selectedColorValue;
+  console.log(hoveredColorName, selectedColorValue);
   return (
     <div className="color-selector">
       <div className="color-options">
@@ -25,7 +23,7 @@ export default function ColorSelector({
             key={option.id}
             className="color-options__item"
             onMouseEnter={() => setHoveredColorName(option.name)}
-            onMouseLeave={() => setHoveredColorName(undefined)}
+            onMouseLeave={() => setHoveredColorName("")}
           >
             <input
               type="radio"

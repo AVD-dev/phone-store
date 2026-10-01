@@ -90,7 +90,7 @@ describe("ColorSelector", () => {
       />,
     );
 
-    expect(screen.getByText("#0000ff")).toBeInTheDocument();
+    expect(screen.getByText("Blue")).toBeInTheDocument();
   });
 
   it("should display the hovered color name instead of the selected color value", () => {
@@ -110,7 +110,7 @@ describe("ColorSelector", () => {
     expect(screen.queryByText("#000000")).not.toBeInTheDocument();
   });
 
-  it("should restore the selected color value when hover ends", () => {
+  it("should restore the selected color name when hover ends", () => {
     render(
       <ColorSelector
         colors={colors}
@@ -124,11 +124,11 @@ describe("ColorSelector", () => {
     fireEvent.mouseEnter(options[1]);
 
     expect(screen.getByText("Blue")).toBeInTheDocument();
-    expect(screen.queryByText("#000000")).not.toBeInTheDocument();
+    expect(screen.queryByText("Black")).not.toBeInTheDocument();
 
     fireEvent.mouseLeave(options[1]);
 
-    expect(screen.getByText("#000000")).toBeInTheDocument();
+    expect(screen.getByText("Black")).toBeInTheDocument();
     expect(screen.queryByText("Blue")).not.toBeInTheDocument();
   });
 });

@@ -9,7 +9,7 @@ import type {
   ProductSpecifications,
 } from "../../types/product-detail.type";
 
-import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
+import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
 
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
 
@@ -27,7 +27,7 @@ vi.mock("../../../cart/state/cart.context", () => ({
   useCart: vi.fn(),
 }));
 
-vi.mock("./phone-specification.mapper", () => ({
+vi.mock("../../ui/phone-specifications/phone-specification.mapper", () => ({
   toProductSpecificationsViewModel: vi.fn(),
 }));
 
@@ -114,7 +114,6 @@ const specificationsMock = {
 } as PhoneSpecificationProps;
 
 const getProductByIdMock = vi.mocked(getProductById);
-
 const useCartMock = vi.mocked(useCart);
 
 const toProductSpecificationsViewModelMock = vi.mocked(
@@ -164,10 +163,10 @@ describe("PhoneDetailPage", () => {
     renderPage("123");
 
     await waitFor(() => {
-      expect(getProductByIdMock).toHaveBeenCalledTimes(1);
+      expect(getProductByIdMock).toHaveBeenCalledWith("123");
     });
 
-    expect(getProductByIdMock).toHaveBeenCalledWith("123");
+    expect(getProductByIdMock).toHaveBeenCalledTimes(1);
   });
 
   it("should map product specifications", async () => {
@@ -186,9 +185,7 @@ describe("PhoneDetailPage", () => {
     expect(await screen.findByTestId("product-info")).toBeInTheDocument();
 
     expect(screen.getByText("Phone X")).toBeInTheDocument();
-
     expect(screen.getByTestId("phone-specifications")).toBeInTheDocument();
-
     expect(screen.getByText("Samsung")).toBeInTheDocument();
   });
 

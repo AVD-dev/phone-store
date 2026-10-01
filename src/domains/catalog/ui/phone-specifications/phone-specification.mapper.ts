@@ -1,5 +1,5 @@
 import type { ProductDetail } from "../../types/product-detail.type";
-import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
+import type { PhoneSpecificationProps } from "./phone-specification.types";
 
 export function toProductSpecificationsViewModel(
   product: ProductDetail,

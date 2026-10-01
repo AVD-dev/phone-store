@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getProductById } from "../../data-access/catalog-api";
 import PhoneSpecifications from "../../ui/phone-specifications/phone-specifications";
 import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phone-specification.types";
-import { toProductSpecificationsViewModel } from "./phone-specification.mapper";
+import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
 import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
 import PhoneCard from "../../ui/phone-card/phone-card";
 import type { CartItem } from "../../../cart/types/cart.types";
