@@ -9,10 +9,10 @@ import type { PhoneSpecificationProps } from "../../ui/phone-specifications/phon
 import { toProductSpecificationsViewModel } from "../../ui/phone-specifications/phone-specification.mapper";
 import { toPhoneCardViewModel } from "../../ui/phone-card/phone-card.mapper";
 import PhoneCard from "../../ui/phone-card/phone-card";
-import type { CartItem } from "../../../cart/types/cart.types";
 import { useCart } from "../../../cart/state/cart.context";
 import type { ProductDetail } from "../../types/product-detail.type";
 import type { PhoneCardProps } from "../../ui/phone-card/phone-card.types";
+import { toCartItem } from "./phone-detail-page.mapper";
 
 export default function PhoneDetailPage() {
   const { phoneId } = useParams();
@@ -31,22 +31,10 @@ export default function PhoneDetailPage() {
   const getMappedPhoneCards = (): PhoneCardProps[] =>
     phoneSource.similarProducts.map((phone) => toPhoneCardViewModel(phone));
 
-  const handleOnAdd = (colorId: string, storagePrice: number) => {
-    const phoneColor = phoneSource.colors.find((color) => color.id === colorId);
+  const handleOnAdd = (colorId: string, storageId: string) => {
+    const cartItem = toCartItem(phoneSource, { colorId, storageId });
 
-    const phoneStorage = phoneSource.storageOptions.find(
-      (option) => option.price === storagePrice,
-    );
-
-    if (!phoneColor || !phoneStorage) return;
-
-    const cartItem: CartItem = {
-      id: phoneSource.id,
-      name: phoneSource.name,
-      storage: phoneStorage.capacity,
-      color: { name: phoneColor.name, imageUrl: phoneColor.imageUrl },
-      price: phoneStorage.price,
-    };
+    if (!cartItem) return;
 
     addItem(cartItem);
     navigate("/cart");

@@ -16,7 +16,7 @@ import PhoneDetailPage from "./phone-detail-page";
 import { useCart } from "../../../cart/state/cart.context";
 
 let selectedColor = "black-id";
-let selectedPrice = 899;
+let selectedStorage = "256-id";
 
 vi.mock("../../data-access/catalog-api", () => ({
   getProductByIdSuspense: vi.fn(),
@@ -36,12 +36,15 @@ vi.mock("../../ui/product-info/product-info", () => ({
     onAdd,
   }: {
     data: ProductDetail;
-    onAdd: (colorId: string, price: number) => void;
+    onAdd: (colorId: string, storageId: string) => void;
   }) => (
     <div data-testid="product-info">
       <span>{data.name}</span>
 
-      <button type="button" onClick={() => onAdd(selectedColor, selectedPrice)}>
+      <button
+        type="button"
+        onClick={() => onAdd(selectedColor, selectedStorage)}
+      >
         ADD MOCK
       </button>
     </div>
@@ -154,7 +157,7 @@ describe("PhoneDetailPage", () => {
     useNavigateMock.mockReturnValue(navigate);
 
     selectedColor = "black-id";
-    selectedPrice = 899;
+    selectedStorage = "256-id";
 
     useCartMock.mockReturnValue({
       items: [],
@@ -253,7 +256,7 @@ describe("PhoneDetailPage", () => {
   it("should not add item when selected storage does not exist", async () => {
     const user = userEvent.setup();
 
-    selectedPrice = 9999;
+    selectedStorage = "invalid-id";
 
     renderPage();
 

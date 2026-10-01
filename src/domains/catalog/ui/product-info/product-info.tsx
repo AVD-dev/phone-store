@@ -3,18 +3,21 @@ import "./product-info.scss";
 import Button from "../../../../components/button/button";
 import type { ProductInfoProps } from "./product-info.types";
 import type { ColorOption } from "../../../../components/color-selector/color-selector.types";
-import type { ProductColor } from "../../types/product-detail.type";
+import type {
+  ProductColor,
+  ProductStorage,
+} from "../../types/product-detail.type";
 import ColorSelector from "../../../../components/color-selector/color-selector";
 
 export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState<ProductColor>();
-  const [selectedStoragePrice, setSelectedStoragePrice] = useState<number>();
+  const [selectedStorage, setSelectedStorage] = useState<ProductStorage>();
 
-  const priceLabel = selectedStoragePrice
-    ? `${selectedStoragePrice} EUR`
+  const priceLabel = selectedStorage
+    ? `${selectedStorage.price} EUR`
     : `From ${data.basePrice} EUR`;
 
-  const isDisabled = !selectedColor || !selectedStoragePrice;
+  const isDisabled = !selectedColor || !selectedStorage;
 
   const phoneColorImage = selectedColor
     ? selectedColor.imageUrl
@@ -28,8 +31,8 @@ export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
   );
 
   const handleOnAdd = (): void => {
-    if (selectedColor && selectedStoragePrice) {
-      onAdd(selectedColor.id, selectedStoragePrice);
+    if (selectedColor && selectedStorage) {
+      onAdd(selectedColor.id, selectedStorage.id);
       return;
     }
 
@@ -65,9 +68,9 @@ export default function ProductInfo({ data, onAdd }: ProductInfoProps) {
                     <input
                       type="radio"
                       name="storage-option"
-                      value={option.price}
-                      checked={selectedStoragePrice === option.price}
-                      onChange={() => setSelectedStoragePrice(option.price)}
+                      value={option.id}
+                      checked={selectedStorage?.id === option.id}
+                      onChange={() => setSelectedStorage(option)}
                     ></input>
                     <span>{option.capacity}</span>
                   </label>

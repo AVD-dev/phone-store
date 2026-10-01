@@ -75,7 +75,7 @@ describe("ProductInfo", () => {
 
     render(<ProductInfo data={data} onAdd={vi.fn()} />);
 
-    const storage256 = screen.getByDisplayValue("899");
+    const storage256 = screen.getByDisplayValue("2");
 
     await user.click(storage256);
 
@@ -89,8 +89,8 @@ describe("ProductInfo", () => {
 
     render(<ProductInfo data={data} onAdd={vi.fn()} />);
 
-    const storage128 = screen.getByDisplayValue("799");
-    const storage256 = screen.getByDisplayValue("899");
+    const storage128 = screen.getByDisplayValue("1");
+    const storage256 = screen.getByDisplayValue("2");
 
     await user.click(storage128);
 
@@ -125,7 +125,7 @@ describe("ProductInfo", () => {
 
     expect(addButton).toBeDisabled();
 
-    await user.click(screen.getByDisplayValue("799"));
+    await user.click(screen.getByDisplayValue("1"));
 
     expect(addButton).toBeDisabled();
 
@@ -148,13 +148,13 @@ describe("ProductInfo", () => {
     expect(image).toHaveAttribute("src", "phone-green.png");
   });
 
-  it("should call onAdd with selected color id and storage price", async () => {
+  it("should call onAdd with selected color and storage ids", async () => {
     const user = userEvent.setup();
     const onAdd = vi.fn();
 
     render(<ProductInfo data={data} onAdd={onAdd} />);
 
-    await user.click(screen.getByDisplayValue("899"));
+    await user.click(screen.getByDisplayValue("2"));
     await user.click(screen.getByDisplayValue("#000000"));
 
     await user.click(
@@ -164,6 +164,6 @@ describe("ProductInfo", () => {
     );
 
     expect(onAdd).toHaveBeenCalledTimes(1);
-    expect(onAdd).toHaveBeenCalledWith("Black", 899);
+    expect(onAdd).toHaveBeenCalledWith("Black", "2");
   });
 });
